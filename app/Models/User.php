@@ -23,6 +23,7 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+
     protected function casts(): array
     {
         return [
@@ -36,4 +37,8 @@ class User extends Authenticatable
         return in_array($this->role, $roles);
     }
 
+    public function spec()
+    {
+        return $this->belongsTo(Spec::class);
+    }
 }

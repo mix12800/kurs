@@ -7,7 +7,8 @@ use App\Http\Requests\RegistrationUserReqest;
 use App\Http\Requests\RoleRequest;
 use App\Models\User;
 use App\Http\Requests\UpdateUserRequest;
-use Auth;
+use App\Models\Spec;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -16,9 +17,9 @@ class UserController extends Controller
     public function role(RoleRequest $request, User $user)
     {
         $user->role = $request->role;
-        $user->specialty_id = ($request->role == 'doctor') ? $request->specialty_id : null;
+        $user->spec_id = ($request->role == 'doctor') ? $request->spec_id : null;
         $user->save();
-        return response()->json(['user' => $user]);
+        return response()->json(['message' => 'ok']);
     }
 
     public function registration(RegistrationUserReqest $request)
@@ -41,7 +42,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response()->json(['users' => User::all()]);
+        return response()->json(['users' => User::with("spec")->get()]);
     }
 
     /**
@@ -66,6 +67,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $user = User::with("spec")->find($user->id);
         if ($user->id == Auth::id() || Auth::user()->role == 'admin') {
             return response()->json(['user' => $user]);
         }

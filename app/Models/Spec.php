@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable(['name'])]
-class Specialtie extends Model
+class Spec extends Model
 {
     //
 }

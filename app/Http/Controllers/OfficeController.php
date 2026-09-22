@@ -29,7 +29,8 @@ class OfficeController extends Controller
      */
     public function store(StoreOfficeRequest $request)
     {
-        //
+        $office = Office::create($request->all());
+        return response()->json(['office' => $office]);
     }
 
     /**

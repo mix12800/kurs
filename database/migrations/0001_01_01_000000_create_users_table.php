@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('email')->unique();
             $table->enum('role', ['user', 'doctor', 'admin'])->default('user');
-            $table->foreignId('specialty_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('spec_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('login')->unique();
             $table->string('password');
             $table->timestamps();

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSpecialtieRequest extends FormRequest
+class UpdateSpecRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class StoreSpecialtieRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required|unique:specialties',
+            'name' => 'unique:specs',
         ];
     }
 }

@@ -24,7 +24,7 @@ class RoleRequest extends FormRequest
     {
         return [
             'role'=>'in:user,admin,doctor',
-            'specialty_id'=>'required_if:role,doctor|exists:specialties,id'
+            'spec_id'=>'required_if:role,doctor|exists:specs,id'
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Specialtie;
+use App\Models\Spec;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -34,8 +34,10 @@ class DatabaseSeeder extends Seeder
             'password' => 'admin',
         ]);
 
-        Specialtie::create([
+        Spec::create([
             'name' => 'Терапевт',
         ]);
+
+        
     }
 }
