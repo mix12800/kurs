@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Office;
 use App\Models\Spec;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -23,21 +24,42 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        User::create([
-            'last_name' => 'Иванов',
-            'first_name' => 'Иван',
-            'middle_name' => 'Иванович',
-            'phone' => '+79999999999',
-            'email' => 'admin@email.com',
-            'role' => 'admin',
-            'login' => 'admin',
-            'password' => 'admin',
-        ]);
+        $users = [
+            [
+                'last_name' => 'Иванов',
+                'first_name' => 'Иван',
+                'middle_name' => 'Иванович',
+                'phone' => '+79999999999',
+                'email' => 'admin@email.com',
+                'role' => 'admin',
+                'login' => 'admin',
+                'password' => 'admin',
+            ],
+            [
+                'last_name' => 'Егоров',
+                'first_name' => 'Егор',
+                'middle_name' => 'Егорович',
+                'phone' => '+79999999999',
+                'email' => 'doctor@email.com',
+                'spec_id' => '1',
+                'role' => 'doctor',
+                'login' => 'doctor',
+                'password' => 'doctor',
+            ]
+        ];
+
 
         Spec::create([
             'name' => 'Терапевт',
         ]);
 
-        
+        foreach ($users as  $user) {
+            User::create($user);
+        }
+
+        Office::create([
+            'num' => '101',
+            'doctor_id' => '2',
+        ]);
     }
 }

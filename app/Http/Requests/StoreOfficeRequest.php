@@ -23,8 +23,8 @@ class StoreOfficeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'num'=>'required|unique:offices',
-            'doctor_id'=>'required|unique:offices|exists:users,id',
+            'num' => 'required',
+            'doctor_id' => 'required|unique:offices|exists:users,id',
         ];
     }
 }

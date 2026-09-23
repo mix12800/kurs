@@ -31,7 +31,7 @@ class SpecController extends Controller
     public function store(StoreSpecRequest $request)
     {
         $Spec = Spec::create($request->all());
-        return response()->json(['Spec' => $Spec]);
+        return response()->json(['spec' => $Spec]);
     }
 
     /**
@@ -39,7 +39,7 @@ class SpecController extends Controller
      */
     public function show(Spec $Spec)
     {
-        return response()->json(['Spec' => $Spec]);
+        return response()->json(['spec' => $Spec]);
     }
 
     /**
@@ -56,7 +56,7 @@ class SpecController extends Controller
     public function update(UpdateSpecRequest $request, Spec $Spec)
     {
         $Spec->update($request->all());
-        return response()->json(['Spec' => $Spec]);
+        return response()->json(['spec' => $Spec]);
     }
 
     /**

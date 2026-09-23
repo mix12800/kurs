@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Office;
 use App\Http\Requests\StoreOfficeRequest;
 use App\Http\Requests\UpdateOfficeRequest;
+use App\Models\User;
 
 class OfficeController extends Controller
 {
@@ -13,7 +14,7 @@ class OfficeController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(['offices' => Office::with('doctor')->get()]);
     }
 
     /**
@@ -29,8 +30,12 @@ class OfficeController extends Controller
      */
     public function store(StoreOfficeRequest $request)
     {
-        $office = Office::create($request->all());
-        return response()->json(['office' => $office]);
+        $user = User::where('id', $request->doctor_id)->first();
+        if ($user->role == 'doctor') {
+            $office = Office::create($request->all());
+            return response()->json(['office' => $office]);
+        }
+        return response()->json(['errors' => ["doctor_id" => ["Нельзя добавить пациента в кабинет."]]], 422);
     }
 
     /**
@@ -54,7 +59,12 @@ class OfficeController extends Controller
      */
     public function update(UpdateOfficeRequest $request, Office $office)
     {
-        //
+        $user = User::where('id', $request->doctor_id)->first();
+        if ($user->role == 'doctor') {
+            $office = Office::create($request->all());
+            return response()->json(['office' => $office]);
+        }
+        return response()->json(['errors' => ["doctor_id" => ["Нельзя добавить пациента в кабинет."]]], 422);
     }
 
     /**
