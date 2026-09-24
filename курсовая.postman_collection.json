@@ -1,0 +1,5805 @@
+{
+  "info": {
+    "_postman_id": "25570b26-751f-4cd4-bd86-b25bff66649d",
+    "name": "курсовая",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49678141"
+  },
+  "item": [
+    {
+      "name": "Регистрация",
+      "item": [
+        {
+          "name": "Регистрация пустые поля",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.last_name[0]).to.eql(\"Поле Фамилия обязательно.\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}registration",
+              "host": [
+                "{{server}}registration"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Регистрация валидация уже есть пользователь email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.email[0]).to.eql('Такое значение поля E-Mail адрес уже существует.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "admin@email.com",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "{{$randomUUID}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}registration",
+              "host": [
+                "{{server}}registration"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Регистрация валидация уже есть пользователь логин",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.login[0]).to.eql('Такое значение поля Логин уже существует.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "admin",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}registration",
+              "host": [
+                "{{server}}registration"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Регистрация валидация пароля длина",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.password[0]).to.eql('Количество символов в поле Пароль должно быть не меньше 8.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "ivan@email.com",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "ivan",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}registration",
+              "host": [
+                "{{server}}registration"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Регистрация валидация регулярные 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.phone[0]).to.eql('Значение поля Телефон имеет некорректный формат.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "sdfdsf",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "ivan@email.com",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "ivan",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}registration",
+              "host": [
+                "{{server}}registration"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Регистрация валидация регулярные 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.last_name[0]).to.eql('Значение поля Фамилия имеет некорректный формат.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "vita",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "vita",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "vita",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "ivan@email.com",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "ivan",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}registration",
+              "host": [
+                "{{server}}registration"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Регистрация валидация email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.email[0]).to.eql('Значение поля E-Mail адрес должно быть действительным электронным адресом.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "ivan",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "ivan",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}registration",
+              "host": [
+                "{{server}}registration"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Регистрация успешная",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('token');\r\n    pm.collectionVariables.set('user_token', jsonData.token);\r\n    pm.collectionVariables.set('user_id', jsonData.user.id);\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "{{$randomUUID}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}registration",
+              "host": [
+                "{{server}}registration"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Авторизация",
+      "item": [
+        {
+          "name": "Авторизация пустые поля",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.login[0]).to.eql('Поле Логин обязательно.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{server}}auth",
+              "host": [
+                "{{server}}auth"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Авторизация неуспешная",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.login[0]).to.eql('Ошибка вхорда.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "login",
+                  "value": "sdfa",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "asdfasdf",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}auth",
+              "host": [
+                "{{server}}auth"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Авторизация успешная",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('token');\r\n    pm.collectionVariables.set('admin_token', jsonData.token);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "login",
+                  "value": "admin",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "admin",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}auth",
+              "host": [
+                "{{server}}auth"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Добавление специальности",
+      "item": [
+        {
+          "name": "Добавление специальности не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "{{$randomWord}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}spec",
+              "host": [
+                "{{server}}spec"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Добавление специальности недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "{{$randomWord}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}spec",
+              "host": [
+                "{{server}}spec"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Добавление специальности валидация пустое поле",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.name[0]).to.eql(\"Поле Название обязательно.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}spec",
+              "host": [
+                "{{server}}spec"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Добавление специальности валидация уже существует",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.name[0]).to.eql(\"Такое значение поля Название уже существует.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Терапевт",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}spec",
+              "host": [
+                "{{server}}spec"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Добавление специальности успешная",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('spec');\r",
+                  "    pm.collectionVariables.set('spec_id', jsonData.spec.id);\r",
+                  "}); "
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "{{$randomWord}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}spec",
+              "host": [
+                "{{server}}spec"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Редактрование специальности",
+      "item": [
+        {
+          "name": "Редактирование специальности не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "{{$randomWord}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Редактирование специальности недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "{{$randomWord}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Редактирование специальности не существующая специальность",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Spec] 0\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}spec/0",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Редактирование специальности валидация уже существует",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.name[0]).to.eql(\"Такое значение поля Название уже существует.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Терапевт",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Редактирование специальности успешная",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('spec');\r",
+                  "}); "
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "{{$randomWord}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Получить все специальности",
+      "item": [
+        {
+          "name": "Получить все специальности не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec",
+              "host": [
+                "{{server}}spec"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить все специальности успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('specs');\r",
+                  "}); "
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec",
+              "host": [
+                "{{server}}spec"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Получить специальность",
+      "item": [
+        {
+          "name": "Получить специальность не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить специальность недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить специальность не существующая специальность",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Spec] 0\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec/0",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить специальность успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('spec');\r",
+                  "}); "
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Удаление специальности",
+      "item": [
+        {
+          "name": "Удаление специальности не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удаление специальности недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удаление специальности не существующая специальность",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Spec] 0\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec/0",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удаление специальности успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"ok\");\r",
+                  "}); "
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Создание пользователя администратор",
+      "item": [
+        {
+          "name": "Создание пользователя не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "{{$randomUUID}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создание пользователя недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "{{$randomUUID}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создание пользователя валидация пустые поля",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.last_name[0]).to.eql(\"Поле Фамилия обязательно.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "{{$randomEmail}}",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "login",
+                  "value": "{{$randomUUID}}",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создание пользователя валидация уже есть пользователь",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.email[0]).to.eql('Такое значение поля E-Mail адрес уже существует.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "admin@email.com",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "admin",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создание пользователя валидация пароля длина",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.password[0]).to.eql('Количество символов в поле Пароль должно быть не меньше 8.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "ivan@email.com",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "ivan",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создание пользователя валидация регулярные 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.phone[0]).to.eql('Значение поля Телефон имеет некорректный формат.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "sdfdsf",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "ivan@email.com",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "ivan",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создание пользователя валидация регулярные 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.last_name[0]).to.eql('Значение поля Фамилия имеет некорректный формат.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "vita",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "vita",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "vita",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "ivan@email.com",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "ivan",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создание пользователя валидация email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.email[0]).to.eql('Значение поля E-Mail адрес должно быть действительным электронным адресом.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "ivan",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "ivan",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создание пользователя успешное",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.collectionVariables.set('create_user_id', jsonData.user.id);\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "{{$randomUUID}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Редактирование пользователя",
+      "item": [
+        {
+          "name": "Редактирование пользователя не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Редактирование пользователя недоступный по правам чужого пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "{{$randomUUID}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Редактирование пользователя не существующий  пользователь",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\User] 0\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user/0",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Редактирование пользователя себя успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('user');\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "{{$randomUUID}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/{{user_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Редактирование пользователя админ успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('user');\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "{{$randomUUID}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Получить всех пользователей",
+      "item": [
+        {
+          "name": "Получить всех пользователей не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить всех пользователей недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить всех пользователей успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('users');\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Получить пользователя",
+      "item": [
+        {
+          "name": "Получить пользователя не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить пользователя недоступный по правам чужой пользователь",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить пользователя не существующий пользователь",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\User] 0\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user/0",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить пользователя себя успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('user');\r",
+                  "}); "
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user/{{user_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить пользователя успех админ",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('user');\r",
+                  "}); "
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Изменение роли пользователя",
+      "item": [
+        {
+          "name": "Изменение роли пользователя не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "role",
+                  "value": "doctor",
+                  "type": "text"
+                },
+                {
+                  "key": "specialty_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}/role",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}",
+                "role"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменение роли пользователя недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "role",
+                  "value": "doctor",
+                  "type": "text"
+                },
+                {
+                  "key": "specialty_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}/role",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}",
+                "role"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменение роли пользователя не существующий пользователь",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\User] 0\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "role",
+                  "value": "doctor",
+                  "type": "text"
+                },
+                {
+                  "key": "specialty_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/0/role",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "0",
+                "role"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменение роли пользователя не существующая роль",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.role[0]).to.eql(\"Значение поля Роль отсутствует в списке разрешённых.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "role",
+                  "value": "qwerty",
+                  "type": "text"
+                },
+                {
+                  "key": "specialty_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}/role",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}",
+                "role"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменение роли пользователя, роль «Доктор» без указания id специальности",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.spec_id[0]).to.eql(\"Поле Специальность обязательно для заполнения, когда Роль содержит doctor.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "role",
+                  "value": "doctor",
+                  "type": "text"
+                },
+                {
+                  "key": "spec_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}/role",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}",
+                "role"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменение роли пользователя, роль «Доктор» не существующая специальность",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.spec_id[0]).to.eql(\"Значение поля Специальность не существует.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "role",
+                  "value": "doctor",
+                  "type": "text"
+                },
+                {
+                  "key": "spec_id",
+                  "value": "0",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}/role",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}",
+                "role"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменение роли пользователя успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"ok\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "role",
+                  "value": "doctor",
+                  "type": "text"
+                },
+                {
+                  "key": "spec_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}/role",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}",
+                "role"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Добавление кабинета к доктору",
+      "item": [
+        {
+          "name": "Добавление кабинета к доктору не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "{{$randomPhoneNumber}}",
+                  "type": "text"
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office",
+              "host": [
+                "{{server}}office"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Добавление кабинета к доктору недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "{{$randomPhoneNumber}}",
+                  "type": "text"
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office",
+              "host": [
+                "{{server}}office"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Добавление кабинета к доктору пустые поля",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.num[0]).to.eql(\"Поле Номер обязательно.\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "{{$randomPhoneNumber}}",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office",
+              "host": [
+                "{{server}}office"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Добавление кабинета к доктору не существующий врач",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Значение поля Доктор не существует.\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "{{$randomPhoneNumber}}",
+                  "type": "text"
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "0",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office",
+              "host": [
+                "{{server}}office"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Добавление кабинета к доктору врач уже в другом кабинете",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Такое значение поля Доктор уже существует.\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "102",
+                  "type": "text"
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "2",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office",
+              "host": [
+                "{{server}}office"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Добавление кабинета к пациенту",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Нельзя добавить пациента в кабинет.\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "102",
+                  "type": "text"
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "{{user_id}}",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office",
+              "host": [
+                "{{server}}office"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Добавление кабинета к доктору успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('office');\r",
+                  "    pm.collectionVariables.set('office_id', jsonData.office.id);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "102",
+                  "type": "text"
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office",
+              "host": [
+                "{{server}}office"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "редактирование кабинета",
+      "item": [
+        {
+          "name": "редактирование кабинета не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "{{$randomPhoneNumber}}",
+                  "type": "text"
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "редактирование кабинета недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "{{$randomPhoneNumber}}",
+                  "type": "text"
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "редактирование кабинета пустые поля",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.num[0]).to.eql(\"Поле Номер обязательно.\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "{{$randomPhoneNumber}}",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "редактирование кабинета не существующий врач",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Значение поля Доктор не существует.\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "{{$randomPhoneNumber}}",
+                  "type": "text"
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "0",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "редактирование кабинета к пациенту",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Нельзя добавить пациента в кабинет.\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "{{$randomPhoneNumber}}",
+                  "type": "text"
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "{{user_id}}",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "редактирование кабинета успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('office');\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "{{$randomPhoneNumber}}",
+                  "type": "text"
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Получить все кабинеты",
+      "item": [
+        {
+          "name": "Получить все кабинеты не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office",
+              "host": [
+                "{{server}}office"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить все кабинеты недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office",
+              "host": [
+                "{{server}}office"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить все кабинеты успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('offices');\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office",
+              "host": [
+                "{{server}}office"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Получить кабинет",
+      "item": [
+        {
+          "name": "Получить кабинет не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить кабинет недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить кабинет не существующий кабинет",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Office] 0\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/0",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить кабинет успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('office');\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Удалить кабинет",
+      "item": [
+        {
+          "name": "Удалить кабинет не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удалить кабинет недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удалить кабинет не существующий кабинет",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Office] 0\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/0",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удалить кабинет успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"ok\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Расписание создать",
+      "item": [
+        {
+          "name": "Расписание создать не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Удаление пользователя",
+      "item": [
+        {
+          "name": "Удаление пользователя не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удаление пользователя недоступный по правам чужой пользователь",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удаление пользователя не существующий пользователь",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\User] 0\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user/0",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удаление пользователя успех себя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"ok\");\r",
+                  "}); "
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user/{{user_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удаление пользователя успех админ",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"ok\");\r",
+                  "}); "
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "server",
+      "value": ""
+    },
+    {
+      "key": "user_token",
+      "value": ""
+    },
+    {
+      "key": "admin_token",
+      "value": ""
+    },
+    {
+      "key": "user_id",
+      "value": ""
+    },
+    {
+      "key": "create_user_id",
+      "value": ""
+    },
+    {
+      "key": "office_id",
+      "value": ""
+    },
+    {
+      "key": "spec_id",
+      "value": ""
+    }
+  ]
+}

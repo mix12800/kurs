@@ -37,33 +37,26 @@ class ScheduleController extends Controller
         $end_time_min = $arr_end_time[0] * 60 + $arr_end_time[1];
         $time = ($end_time_min - $start_time_min);
         $tickets_num = $time / $interval;
-        if ($tickets_num < 0) {
-            return response()->json(["errors" => ["end_time" => ["Время конца не должно пересекаться с началом."]]]);
+        if ($tickets_num <= 0) {
+            return response()->json(["errors" => ["end_time" => ["Время конца не должно пересекаться с началом."]]], 422);
         } else if ($time % $interval) {
-            return response()->json(["errors" => ["end_time" => ["Время должно быть четным интервалу."]]]);
+            return response()->json(["errors" => ["end_time" => ["Время должно быть четным интервалу."]]], 422);
         }
-        
-        // $schedule = Schedule::create($request->all());
 
-        // for ($i=0; $i < $tickets_num; $i++) { 
-        //     $ticket = new Ticket();
-        //     $ticket->doctor_id = $request->doctor_id;
-        //     $ticket->schedule_id = $schedule->id;
-        //     $ticket->date = $request->date;
-        //     $ticket->time = ;
-        // }
-
-        $arr = [];
+        $schedule = Schedule::create($request->all());
 
         $time_ticket = $start_time_min;
-
-        for ($i=0; $i < $tickets_num; $i++) { 
-            array_push($arr, );
-
+        for ($i = 0; $i < $tickets_num; $i++) {
+            $ticket = new Ticket();
+            $ticket->doctor_id = $request->doctor_id;
+            $ticket->schedule_id = $schedule->id;
+            $ticket->date = $request->date;
+            $ticket->time = sprintf("%02d:%02d", floor($time_ticket / 60), $time_ticket % 60);
+            $ticket->save();
+            $time_ticket = $time_ticket + $interval;
         }
-        
 
-        return response()->json([$arr]);
+        return response()->json(['ok']);
     }
 
     /**
