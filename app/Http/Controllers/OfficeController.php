@@ -43,7 +43,8 @@ class OfficeController extends Controller
      */
     public function show(Office $office)
     {
-        //
+        $office = Office::with('doctor.spec')->find($office->id);
+        return response()->json(['office' => $office]);
     }
 
     /**
@@ -51,7 +52,7 @@ class OfficeController extends Controller
      */
     public function edit(Office $office)
     {
-        //
+        // 
     }
 
     /**
@@ -72,6 +73,7 @@ class OfficeController extends Controller
      */
     public function destroy(Office $office)
     {
-        //
+        $office->delete();
+        return response()->json(["message" => "ok"]);
     }
 }

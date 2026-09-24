@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OfficeController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SpecController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -21,5 +22,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('spec', SpecController::class)->except('index');
         Route::patch('user/{user}/role', [UserController::class, 'role']);
         Route::resource('office', OfficeController::class);
+        Route::resource('schedule', ScheduleController::class);
     });
 });
