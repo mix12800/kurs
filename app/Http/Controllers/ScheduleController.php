@@ -6,6 +6,7 @@ use App\Models\Schedule;
 use App\Http\Requests\StoreScheduleRequest;
 use App\Http\Requests\UpdateScheduleRequest;
 use App\Models\Ticket;
+use App\Models\User;
 
 class ScheduleController extends Controller
 {
@@ -30,6 +31,15 @@ class ScheduleController extends Controller
      */
     public function store(StoreScheduleRequest $request)
     {
+        $user = User::find($request->doctor_id);
+        if ($user->role != 'doctor') {
+            return response()->json(['errors' => ["doctor_id" => ["Нельзя добавить пациента в расписание."]]], 422);
+        }
+
+        if (Schedule::where('doctor_id', $request->doctor_id)->where('date', $request->date)->first()) {
+            return response()->json(["errors" => ["date" => ["Смена этого врача уже существует на этот день."]]], 422);
+        }
+
         $interval = 15;
         $arr_start_time = explode(':', $request->start_time);
         $arr_end_time = explode(':', $request->end_time);
@@ -37,6 +47,7 @@ class ScheduleController extends Controller
         $end_time_min = $arr_end_time[0] * 60 + $arr_end_time[1];
         $time = ($end_time_min - $start_time_min);
         $tickets_num = $time / $interval;
+
         if ($tickets_num <= 0) {
             return response()->json(["errors" => ["end_time" => ["Время конца не должно пересекаться с началом."]]], 422);
         } else if ($time % $interval) {
@@ -48,7 +59,6 @@ class ScheduleController extends Controller
         $time_ticket = $start_time_min;
         for ($i = 0; $i < $tickets_num; $i++) {
             $ticket = new Ticket();
-            $ticket->doctor_id = $request->doctor_id;
             $ticket->schedule_id = $schedule->id;
             $ticket->date = $request->date;
             $ticket->time = sprintf("%02d:%02d", floor($time_ticket / 60), $time_ticket % 60);
@@ -56,7 +66,7 @@ class ScheduleController extends Controller
             $time_ticket = $time_ticket + $interval;
         }
 
-        return response()->json(['ok']);
+        return response()->json(['schedule' => $schedule]);
     }
 
     /**
@@ -80,7 +90,10 @@ class ScheduleController extends Controller
      */
     public function update(UpdateScheduleRequest $request, Schedule $schedule)
     {
-        //
+        $user = User::find($request->doctor_id);
+        if ($user->role != 'doctor') {
+            return response()->json(['errors' => ["doctor_id" => ["Нельзя добавить пациента в расписание."]]], 422);
+        }
     }
 
     /**

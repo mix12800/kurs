@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Spec;
 use App\Http\Requests\StoreSpecRequest;
 use App\Http\Requests\UpdateSpecRequest;
-use Nette\Schema\Message;
 
 class SpecController extends Controller
 {

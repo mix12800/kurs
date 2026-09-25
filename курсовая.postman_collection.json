@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "25570b26-751f-4cd4-bd86-b25bff66649d",
+    "_postman_id": "d16a701a-279d-4b3e-9bcc-05d44acd7e7c",
     "name": "курсовая",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "49678141"
@@ -5395,10 +5395,10 @@
       ]
     },
     {
-      "name": "Расписание создать",
+      "name": "Создать расписание",
       "item": [
         {
-          "name": "Расписание создать не авторизован",
+          "name": "Создать расписание не авторизован",
           "event": [
             {
               "listen": "test",
@@ -5408,6 +5408,214 @@
                   "    pm.response.to.have.status(401);\r",
                   "    let jsonData = pm.response.json();\r",
                   "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание пустые поля",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Поле Доктор обязательно.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание не существующий врач",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Значение поля Доктор не существует.\");\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -5444,7 +5652,7 @@
               "formdata": [
                 {
                   "key": "doctor_id",
-                  "value": "1",
+                  "value": "0",
                   "type": "text",
                   "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
                 },
@@ -5472,6 +5680,980 @@
               "raw": "{{server}}schedule",
               "host": [
                 "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание для пациента",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Нельзя добавить пациента в расписание.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание Некорректная дата",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.date[0]).to.eql(\"Значение поля Дата должно быть корректной датой.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "0000",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание прошлая дата",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.date[0]).to.eql(\"Значение поля Дата должно быть датой после или равной today.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2000",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание Некорректное время смены",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.start_time[0]).to.eql(\"Значение поля Начало смены должно соответствовать формату даты: H:i.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "94863",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "643564",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание Время пресекается",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время конца не должно пересекаться с началом.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "15:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание смена уже существует",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.date[0]).to.eql(\"Смена этого врача уже существует на этот день.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "2",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "15:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('schedule');\r",
+                  "    pm.collectionVariables.set('schedule_id', jsonData.schedule.id);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "15:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Изменить расписание",
+      "item": [
+        {
+          "name": "Создать расписание не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание не существующий врач",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Значение поля Доктор не существует.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "0",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание на пациента",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Нельзя добавить пациента в расписание.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание Некорректная дата",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.date[0]).to.eql(\"Значение поля Дата должно быть корректной датой.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "0000",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
               ]
             }
           },
@@ -5799,6 +6981,10 @@
     },
     {
       "key": "spec_id",
+      "value": ""
+    },
+    {
+      "key": "schedule_id",
       "value": ""
     }
   ]

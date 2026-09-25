@@ -1,0 +1,1 @@
+composer i && php artisan key:generate && php artisan migrate:fresh --seed && start cmd /k php artisan serve

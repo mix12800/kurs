@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Office;
+use App\Models\Schedule;
 use App\Models\Spec;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -60,6 +61,13 @@ class DatabaseSeeder extends Seeder
         Office::create([
             'num' => '101',
             'doctor_id' => '2',
+        ]);
+
+        Schedule::create([
+            "doctor_id"=>'2',
+            "date"=>'01.01.2100',
+            "start_time"=>'09:00',
+            "end_time"=>'10:00',
         ]);
     }
 }
