@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "d16a701a-279d-4b3e-9bcc-05d44acd7e7c",
+    "_postman_id": "21b737ee-92ae-45fc-a970-a67cb329b15e",
     "name": "курсовая",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "49678141"
@@ -5458,6 +5458,12 @@
                   "value": "16:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "8a11ac5e-ea1c-4a2a-b2f0-8cbd2bffd3c9"
                 }
               ]
             },
@@ -5538,6 +5544,12 @@
                   "value": "16:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "0af9fccc-a223-4b9e-b2f2-bd21b4b07754"
                 }
               ]
             },
@@ -5673,6 +5685,12 @@
                   "value": "16:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "07b24da9-4c91-4eee-8dba-997285c86320"
                 }
               ]
             },
@@ -5753,6 +5771,12 @@
                   "value": "16:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "2e125966-136c-4ac1-99f7-bc8176b679c4"
                 }
               ]
             },
@@ -5833,6 +5857,12 @@
                   "value": "16:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "4741103b-8fa2-4ef9-935c-516f4de695eb"
                 }
               ]
             },
@@ -5913,6 +5943,12 @@
                   "value": "16:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "cbb92f3d-73b2-4d80-84aa-ea6e24e679f4"
                 }
               ]
             },
@@ -5993,6 +6029,12 @@
                   "value": "643564",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "ab4857d8-d864-4d9a-aa0a-8162bd0ee03e"
                 }
               ]
             },
@@ -6073,6 +6115,12 @@
                   "value": "09:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "580e4a0f-efb9-471e-98e6-84372c1e1032"
                 }
               ]
             },
@@ -6153,6 +6201,184 @@
                   "value": "15:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "58edccdc-99ed-4544-8f17-306514aed215"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание Некорректное время интервала",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.interval[0]).to.eql(\"Значение поля Интервал имеет некорректный формат.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "15:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "100",
+                  "type": "text",
+                  "uuid": "5f997c88-3df7-4cfc-af56-ad720a07d97e"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание время не чётное интервалу",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время должно быть четным интервалу.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "10:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "11",
+                  "type": "text",
+                  "uuid": "5f997c88-3df7-4cfc-af56-ad720a07d97e"
                 }
               ]
             },
@@ -6219,7 +6445,7 @@
                 },
                 {
                   "key": "date",
-                  "value": "01.01.2100",
+                  "value": "01.02.2100",
                   "type": "text",
                   "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
                 },
@@ -6231,9 +6457,15 @@
                 },
                 {
                   "key": "end_time",
-                  "value": "15:00",
+                  "value": "10:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "fef533c4-63bc-4907-95ea-15e34aff5128"
                 }
               ]
             },
@@ -6252,7 +6484,7 @@
       "name": "Изменить расписание",
       "item": [
         {
-          "name": "Создать расписание не авторизован",
+          "name": "Изменить расписание не авторизован",
           "event": [
             {
               "listen": "test",
@@ -6312,6 +6544,12 @@
                   "value": "16:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "d2ae5882-c712-4115-b12d-554184da8faa"
                 }
               ]
             },
@@ -6328,7 +6566,7 @@
           "response": []
         },
         {
-          "name": "Создать расписание недоступный по правам пользователя",
+          "name": "Изменить расписание недоступный по правам пользователя",
           "event": [
             {
               "listen": "test",
@@ -6395,6 +6633,12 @@
                   "value": "16:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "4ec0edbf-7be7-407f-928e-2f48e0334e6e"
                 }
               ]
             },
@@ -6411,7 +6655,7 @@
           "response": []
         },
         {
-          "name": "Создать расписание не существующий врач",
+          "name": "Изменить расписание не существующий врач",
           "event": [
             {
               "listen": "test",
@@ -6478,6 +6722,12 @@
                   "value": "16:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "ba4f46b4-c6d1-4cda-a3db-fb5904ed5db1"
                 }
               ]
             },
@@ -6494,7 +6744,7 @@
           "response": []
         },
         {
-          "name": "Создать расписание на пациента",
+          "name": "Изменить расписание на пациента",
           "event": [
             {
               "listen": "test",
@@ -6561,6 +6811,12 @@
                   "value": "16:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "822e3c1f-63bb-4a6f-88ef-a79c837eb027"
                 }
               ]
             },
@@ -6577,7 +6833,7 @@
           "response": []
         },
         {
-          "name": "Создать расписание Некорректная дата",
+          "name": "Изменить расписание Некорректная дата",
           "event": [
             {
               "listen": "test",
@@ -6644,6 +6900,457 @@
                   "value": "16:00",
                   "type": "text",
                   "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "7cf05d72-51e6-41ee-ad46-f634309823b4"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменить расписание Некорректное время смены",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.start_time[0]).to.eql(\"Значение поля Начало смены должно соответствовать формату даты: H:i.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "0000",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "0000",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "5173ac3e-7d4b-4eae-aae5-08d6a76b4873"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменить расписание Время пресекается",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время конца не должно пересекаться с началом.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "10:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "4fd1b63c-b86e-4b7f-a932-b5ebe33185f5"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменить расписание Некорректное время интервала",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.interval[0]).to.eql(\"Значение поля Интервал имеет некорректный формат.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "10:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "gg",
+                  "type": "text",
+                  "uuid": "4fd1b63c-b86e-4b7f-a932-b5ebe33185f5"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменить расписание время не чётное интервалу",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время должно быть четным интервалу.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "10:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "11",
+                  "type": "text",
+                  "uuid": "4fd1b63c-b86e-4b7f-a932-b5ebe33185f5"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменить расписание успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время должно быть четным интервалу.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "11:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "4fd1b63c-b86e-4b7f-a932-b5ebe33185f5"
                 }
               ]
             },

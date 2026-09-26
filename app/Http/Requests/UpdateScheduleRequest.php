@@ -27,6 +27,7 @@ class UpdateScheduleRequest extends FormRequest
             'date' => 'date|after_or_equal:today',
             'start_time' => 'date_format:H:i',
             'end_time' => 'date_format:H:i',
+            'interval' => 'regex:/^\d{2}$/',
         ];
     }
 }

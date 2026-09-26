@@ -40,7 +40,11 @@ class ScheduleController extends Controller
             return response()->json(["errors" => ["date" => ["Смена этого врача уже существует на этот день."]]], 422);
         }
 
-        $interval = 15;
+        if ($request->end_time <= $request->start_time) {
+            return response()->json(["errors" => ["end_time" => ["Время конца не должно пересекаться с началом."]]], 422);
+        }
+
+        $interval = $request->interval;
         $arr_start_time = explode(':', $request->start_time);
         $arr_end_time = explode(':', $request->end_time);
         $start_time_min = $arr_start_time[0] * 60 + $arr_start_time[1];
@@ -48,9 +52,7 @@ class ScheduleController extends Controller
         $time = ($end_time_min - $start_time_min);
         $tickets_num = $time / $interval;
 
-        if ($tickets_num <= 0) {
-            return response()->json(["errors" => ["end_time" => ["Время конца не должно пересекаться с началом."]]], 422);
-        } else if ($time % $interval) {
+        if ($time % $interval) {
             return response()->json(["errors" => ["end_time" => ["Время должно быть четным интервалу."]]], 422);
         }
 
@@ -94,6 +96,26 @@ class ScheduleController extends Controller
         if ($user->role != 'doctor') {
             return response()->json(['errors' => ["doctor_id" => ["Нельзя добавить пациента в расписание."]]], 422);
         }
+
+        if ($request->end_time <= $request->start_time) {
+            return response()->json(["errors" => ["end_time" => ["Время конца не должно пересекаться с началом."]]], 422);
+        }
+
+        $interval = $request->interval;
+        $arr_start_time = explode(':', $request->start_time);
+        $arr_end_time = explode(':', $request->end_time);
+        $start_time_min = $arr_start_time[0] * 60 + $arr_start_time[1];
+        $end_time_min = $arr_end_time[0] * 60 + $arr_end_time[1];
+        $time = ($end_time_min - $start_time_min);
+        $tickets_num = $time / $interval;
+
+        if ($time % $interval) {
+            return response()->json(["errors" => ["end_time" => ["Время должно быть четным интервалу."]]], 422);
+        }
+
+        $tickets = Ticket::where("schedule_id", $schedule->id)->delete();
+        
+        return 'ok';
     }
 
     /**

@@ -27,6 +27,7 @@ class StoreScheduleRequest extends FormRequest
             'date' => 'required|date|after_or_equal:today',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
+            'interval'=>'required|regex:/^\d{2}$/',
         ];
     }
 }
