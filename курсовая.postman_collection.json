@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "21b737ee-92ae-45fc-a970-a67cb329b15e",
+    "_postman_id": "94afb171-c153-4a20-8a83-7825ece70253",
     "name": "курсовая",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "49678141"
@@ -1465,60 +1465,6 @@
           "response": []
         },
         {
-          "name": "Получить специальность недоступный по правам пользователя",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(403);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{user_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{server}}spec/{{spec_id}}",
-              "host": [
-                "{{server}}spec"
-              ],
-              "path": [
-                "{{spec_id}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
           "name": "Получить специальность не существующая специальность",
           "event": [
             {
@@ -1567,6 +1513,60 @@
               ],
               "path": [
                 "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить специальность недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
               ]
             }
           },
@@ -6744,6 +6744,84 @@
           "response": []
         },
         {
+          "name": "Изменить расписание не существующие расписание",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Schedule] 0\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "0",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/0",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Изменить расписание на пациента",
           "event": [
             {
@@ -7283,16 +7361,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время должно быть четным интервалу.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время должно быть четным интервалу.\");\r\n});"
+                ]
               }
             }
           ],
@@ -7325,35 +7397,953 @@
                 {
                   "key": "doctor_id",
                   "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
                   "value": "01.01.2100",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
-                  "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "value": "08:00",
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
-                  "value": "11:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "value": "09:00",
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "15",
-                  "type": "text",
-                  "uuid": "4fd1b63c-b86e-4b7f-a932-b5ebe33185f5"
+                  "type": "text"
                 }
               ]
             },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Получить всё расписание",
+      "item": [
+        {
+          "name": "Получить всё расписание не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить всё расписание успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('schedules');\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Получить расписание по ID",
+      "item": [
+        {
+          "name": "Получить расписание по ID не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить расписание по ID недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить расписание по ID не существующие расписание",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Schedule] 0\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/0",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить расписание по ID успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('schedule');\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Получить талоны по ID расписания",
+      "item": [
+        {
+          "name": "Получить талоны по ID расписания не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}ticket/{{schedule_id}}",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить талоны по ID расписания не существующие расписание",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Schedule] 0\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}ticket/0",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить талоны по ID расписания успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('tickets');\r\n    pm.collectionVariables.set('ticket_id', jsonData.tickets[0].id);\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}ticket/{{schedule_id}}",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "запись пациента на прием",
+      "item": [
+        {
+          "name": "запись пациента на прием не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}ticket/{{ticket_id}}",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Удалить расписание по ID",
+      "item": [
+        {
+          "name": "Удалить расписание по ID не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удалить расписание по ID недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удалить расписание по ID не существующие расписание",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Schedule] 0\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/0",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удалить расписание по ID успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"ok\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{server}}schedule/{{schedule_id}}",
               "host": [
@@ -7692,6 +8682,10 @@
     },
     {
       "key": "schedule_id",
+      "value": ""
+    },
+    {
+      "key": "ticket_id",
       "value": ""
     }
   ]

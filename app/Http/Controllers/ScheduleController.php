@@ -7,15 +7,22 @@ use App\Http\Requests\StoreScheduleRequest;
 use App\Http\Requests\UpdateScheduleRequest;
 use App\Models\Ticket;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ScheduleController extends Controller
 {
+
+    public function myschedule()
+    {
+        return response()->json(['schedules' => Schedule::where('doctor_id', Auth::id())->get()]);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return response()->json(["schedules" => Schedule::with("user.spec")->get()]);
     }
 
     /**
@@ -76,7 +83,8 @@ class ScheduleController extends Controller
      */
     public function show(Schedule $schedule)
     {
-        //
+        $schedule = Schedule::with("user.spec")->find($schedule->id);
+        return response()->json(["schedule" => $schedule]);
     }
 
     /**
@@ -114,8 +122,20 @@ class ScheduleController extends Controller
         }
 
         $tickets = Ticket::where("schedule_id", $schedule->id)->delete();
-        
-        return 'ok';
+
+        $schedule->update($request->all());
+
+        $time_ticket = $start_time_min;
+        for ($i = 0; $i < $tickets_num; $i++) {
+            $ticket = new Ticket();
+            $ticket->schedule_id = $schedule->id;
+            $ticket->date = $request->date;
+            $ticket->time = sprintf("%02d:%02d", floor($time_ticket / 60), $time_ticket % 60);
+            $ticket->save();
+            $time_ticket = $time_ticket + $interval;
+        }
+
+        return response()->json(['schedule' => $schedule]);
     }
 
     /**
@@ -123,6 +143,7 @@ class ScheduleController extends Controller
      */
     public function destroy(Schedule $schedule)
     {
-        //
+        $schedule->delete();
+        return response()->json(['message' => 'ok']);
     }
 }

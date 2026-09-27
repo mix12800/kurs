@@ -9,5 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable(['doctor_id', 'date', 'start_time', 'end_time'])]
 class Schedule extends Model
 {
-    //
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'doctor_id');
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Schedule;
 use App\Models\Ticket;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
@@ -11,9 +12,9 @@ class TicketController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Schedule $schedule)
     {
-        //
+        return response()->json(['tickets' => Ticket::where('schedule_id', $schedule->id)->get()]);
     }
 
     /**
@@ -53,7 +54,7 @@ class TicketController extends Controller
      */
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
-        //
+        
     }
 
     /**
