@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('user/{user}', [UserController::class, 'destroy']);
     Route::get('ticket/{schedule}', [TicketController::class, 'index']);
 
-    Route::middleware('role:admin,user')->group(function () {
+    Route::middleware('role:admin|user')->group(function () {
         Route::patch('ticket/{ticket}', [TicketController::class, 'update']);
         Route::patch('ticket/сancel/{ticket}', [TicketController::class, 'сancel']);
     });

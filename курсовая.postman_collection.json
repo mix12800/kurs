@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "a32877b3-1ddb-42b6-86d9-9bdb9afd44d4",
+    "_postman_id": "c99a3239-dec5-4d19-897a-8b0a6be55372",
     "name": "курсовая",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "49678141"
@@ -651,7 +651,7 @@
           "response": []
         },
         {
-          "name": "Авторизация успешная",
+          "name": "Авторизация успешная админ",
           "event": [
             {
               "listen": "test",
@@ -659,6 +659,46 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('token');\r\n    pm.collectionVariables.set('admin_token', jsonData.token);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "login",
+                  "value": "admin",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "admin",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}auth",
+              "host": [
+                "{{server}}auth"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Авторизация успешная Пользователь",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('token');\r\n    pm.collectionVariables.set('old_user_token', jsonData.token);\r\n});"
                 ]
               }
             }
@@ -7875,11 +7915,294 @@
           },
           "request": {
             "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}ticket/{{ticket_id}}",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "запись пациента на прием уже занято",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.user_id[0]).to.eql(\"Талон занят.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{admin_token}}",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}ticket/1",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "запись пациента на прием не существующий талон",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Ticket] 0\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}ticket/0",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "запись пациента на прием не существующий пациент",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.user_id[0]).to.eql(\"Значение поля user id не существует.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "user_id",
+                  "value": "0",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}ticket/{{ticket_id}}",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "запись пациента на прием не пациента",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.user_id[0]).to.eql(\"Записать на прием можно только пациента.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "user_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}ticket/{{ticket_id}}",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "запись пациента на прием успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('ticket');\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
                   "type": "string"
                 }
               ]
@@ -7919,7 +8242,7 @@
       "name": "Отмена записи на прием",
       "item": [
         {
-          "name": "Отмена записи на прием не авторизован",
+          "name": "Отмена запись на прием не авторизован",
           "event": [
             {
               "listen": "test",
@@ -7938,11 +8261,53 @@
           },
           "request": {
             "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}ticket/сancel/{{ticket_id}}",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "сancel",
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Отмена запись на прием чужой талон",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{admin_token}}",
+                  "value": "{{user_token}}",
                   "type": "string"
                 }
               ]
@@ -7954,10 +8319,153 @@
                 "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "formdata",
-              "formdata": []
+            "url": {
+              "raw": "{{server}}ticket/сancel/1",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "сancel",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Отмена запись на прием прошедшие время",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.message[0]).to.eql(\"Нельзя отменить прошедший приём.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{old_user_token}}",
+                  "type": "string"
+                }
+              ]
             },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}ticket/сancel/1",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "сancel",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Отмена запись на прием не существующий талон",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Ticket] 0\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{old_user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}ticket/сancel/0",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "сancel",
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Отмена запись на прием не существующий талон Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Ticket] 0\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{old_user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{server}}ticket/сancel/{{ticket_id}}",
               "host": [
@@ -8549,7 +9057,7 @@
   "variable": [
     {
       "key": "server",
-      "value": ""
+      "value": "http://127.0.0.1:8000/api/"
     },
     {
       "key": "user_token",
@@ -8581,6 +9089,10 @@
     },
     {
       "key": "ticket_id",
+      "value": ""
+    },
+    {
+      "key": "old_user_token",
       "value": ""
     }
   ]

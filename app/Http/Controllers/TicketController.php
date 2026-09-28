@@ -7,16 +7,25 @@ use App\Models\Ticket;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
     public function сancel(Ticket $ticket)
     {
-        
-        
+        if ($ticket->user_id != Auth::user()->id && Auth::user()->role != 'admin') {
+            return response()->json(['error' => ['code' => 403, 'message' => 'Доступ запрещен']], 403);
+        }
+
+        $ticketDateTime = Carbon::parse($ticket->date . ' ' . $ticket->time);
+        if ($ticketDateTime->isPast()) {
+            return response()->json(['errors' => ['message' => ['Нельзя отменить прошедший приём.']]], 422);
+        }
+
         $ticket->user_id = null;
-        $ticket->save()   ;
-        return response()->json(["ticket"=>$ticket]);
+        $ticket->save();
+        return response()->json(["ticket" => $ticket]);
     }
 
     /**

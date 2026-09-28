@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Office;
 use App\Models\Schedule;
 use App\Models\Spec;
+use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -46,6 +47,15 @@ class DatabaseSeeder extends Seeder
                 'role' => 'doctor',
                 'login' => 'doctor',
                 'password' => 'doctor',
+            ],
+            [
+                'last_name' => 'Петренко',
+                'first_name' => 'Пётр',
+                'middle_name' => 'Петрович',
+                'phone' => '+79999999999',
+                'email' => 'user@email.com',
+                'login' => 'user',
+                'password' => 'user',
             ]
         ];
 
@@ -64,10 +74,17 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Schedule::create([
-            "doctor_id"=>'2',
-            "date"=>'01.01.2100',
-            "start_time"=>'09:00',
-            "end_time"=>'10:00',
+            "doctor_id" => '2',
+            "date" => '01.01.2100',
+            "start_time" => '09:00',
+            "end_time" => '10:00',
+        ]);
+
+        Ticket::create([
+            "user_id" => "3",
+            "schedule_id" => "1",
+            "date" => "01.01.2000",
+            "time" => "10:00",
         ]);
     }
 }
