@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "94afb171-c153-4a20-8a83-7825ece70253",
+    "_postman_id": "a32877b3-1ddb-42b6-86d9-9bdb9afd44d4",
     "name": "курсовая",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "49678141"
@@ -3417,7 +3417,7 @@
       ]
     },
     {
-      "name": "Изменение роли пользователя",
+      "name": "Изменение роль пользователя",
       "item": [
         {
           "name": "Изменение роли пользователя не авторизован",
@@ -6134,92 +6134,6 @@
           "response": []
         },
         {
-          "name": "Создать расписание смена уже существует",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.date[0]).to.eql(\"Смена этого врача уже существует на этот день.\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "2",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
-                },
-                {
-                  "key": "date",
-                  "value": "01.01.2100",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
-                },
-                {
-                  "key": "start_time",
-                  "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
-                },
-                {
-                  "key": "end_time",
-                  "value": "15:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
-                },
-                {
-                  "key": "interval",
-                  "value": "15",
-                  "type": "text",
-                  "uuid": "58edccdc-99ed-4544-8f17-306514aed215"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}schedule",
-              "host": [
-                "{{server}}schedule"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
           "name": "Создать расписание Некорректное время интервала",
           "event": [
             {
@@ -6379,6 +6293,92 @@
                   "value": "11",
                   "type": "text",
                   "uuid": "5f997c88-3df7-4cfc-af56-ad720a07d97e"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание смена уже существует",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.date[0]).to.eql(\"Смена этого врача уже существует на этот день.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "2",
+                  "type": "text",
+                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text",
+                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text",
+                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                },
+                {
+                  "key": "end_time",
+                  "value": "15:00",
+                  "type": "text",
+                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text",
+                  "uuid": "58edccdc-99ed-4544-8f17-306514aed215"
                 }
               ]
             },
@@ -7467,36 +7467,6 @@
                 "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text"
-                },
-                {
-                  "key": "date",
-                  "value": "01.10.2026",
-                  "type": "text"
-                },
-                {
-                  "key": "start_time",
-                  "value": "09:00",
-                  "type": "text"
-                },
-                {
-                  "key": "end_time",
-                  "value": "16:00",
-                  "type": "text"
-                },
-                {
-                  "key": "interval",
-                  "value": "15",
-                  "type": "text"
-                }
-              ]
-            },
             "url": {
               "raw": "{{server}}schedule",
               "host": [
@@ -7585,36 +7555,6 @@
                 "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text"
-                },
-                {
-                  "key": "date",
-                  "value": "01.10.2026",
-                  "type": "text"
-                },
-                {
-                  "key": "start_time",
-                  "value": "09:00",
-                  "type": "text"
-                },
-                {
-                  "key": "end_time",
-                  "value": "16:00",
-                  "type": "text"
-                },
-                {
-                  "key": "interval",
-                  "value": "15",
-                  "type": "text"
-                }
-              ]
-            },
             "url": {
               "raw": "{{server}}schedule/{{schedule_id}}",
               "host": [
@@ -7663,36 +7603,6 @@
                 "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text"
-                },
-                {
-                  "key": "date",
-                  "value": "01.10.2026",
-                  "type": "text"
-                },
-                {
-                  "key": "start_time",
-                  "value": "09:00",
-                  "type": "text"
-                },
-                {
-                  "key": "end_time",
-                  "value": "16:00",
-                  "type": "text"
-                },
-                {
-                  "key": "interval",
-                  "value": "15",
-                  "type": "text"
-                }
-              ]
-            },
             "url": {
               "raw": "{{server}}schedule",
               "host": [
@@ -7738,36 +7648,6 @@
                 "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text"
-                },
-                {
-                  "key": "date",
-                  "value": "01.10.2026",
-                  "type": "text"
-                },
-                {
-                  "key": "start_time",
-                  "value": "09:00",
-                  "type": "text"
-                },
-                {
-                  "key": "end_time",
-                  "value": "16:00",
-                  "type": "text"
-                },
-                {
-                  "key": "interval",
-                  "value": "15",
-                  "type": "text"
-                }
-              ]
-            },
             "url": {
               "raw": "{{server}}schedule/0",
               "host": [
@@ -7862,36 +7742,6 @@
                 "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text"
-                },
-                {
-                  "key": "date",
-                  "value": "01.10.2026",
-                  "type": "text"
-                },
-                {
-                  "key": "start_time",
-                  "value": "09:00",
-                  "type": "text"
-                },
-                {
-                  "key": "end_time",
-                  "value": "16:00",
-                  "type": "text"
-                },
-                {
-                  "key": "interval",
-                  "value": "15",
-                  "type": "text"
-                }
-              ]
-            },
             "url": {
               "raw": "{{server}}ticket/{{schedule_id}}",
               "host": [
@@ -8025,7 +7875,14 @@
           },
           "request": {
             "auth": {
-              "type": "noauth"
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "PATCH",
             "header": [
@@ -8038,28 +7895,8 @@
               "mode": "formdata",
               "formdata": [
                 {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text"
-                },
-                {
-                  "key": "date",
-                  "value": "01.10.2026",
-                  "type": "text"
-                },
-                {
-                  "key": "start_time",
-                  "value": "09:00",
-                  "type": "text"
-                },
-                {
-                  "key": "end_time",
-                  "value": "16:00",
-                  "type": "text"
-                },
-                {
-                  "key": "interval",
-                  "value": "15",
+                  "key": "user_id",
+                  "value": "{{user_id}}",
                   "type": "text"
                 }
               ]
@@ -8070,6 +7907,64 @@
                 "{{server}}ticket"
               ],
               "path": [
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Отмена записи на прием",
+      "item": [
+        {
+          "name": "Отмена записи на прием не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{server}}ticket/сancel/{{ticket_id}}",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "сancel",
                 "{{ticket_id}}"
               ]
             }

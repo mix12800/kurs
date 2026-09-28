@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('registration', [UserController::class, 'registration']);
 Route::post('auth', [UserController::class, 'auth']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('spec', [SpecController::class, 'index']);
     Route::patch('user/{user}', [UserController::class, 'update']);
@@ -21,7 +22,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('schedule', [ScheduleController::class, 'index']);
     Route::delete('user/{user}', [UserController::class, 'destroy']);
     Route::get('ticket/{schedule}', [TicketController::class, 'index']);
-    Route::patch('ticket/{ticket}', [TicketController::class, 'update']);
+
+    Route::middleware('role:admin,user')->group(function () {
+        Route::patch('ticket/{ticket}', [TicketController::class, 'update']);
+        Route::patch('ticket/сancel/{ticket}', [TicketController::class, 'сancel']);
+    });
+
     Route::middleware('role:admin')->group(function () {
         Route::resource('user', UserController::class)->except('update', 'show', 'destroy');
         Route::resource('spec', SpecController::class)->except('index');

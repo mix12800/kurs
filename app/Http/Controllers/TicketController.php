@@ -6,9 +6,19 @@ use App\Models\Schedule;
 use App\Models\Ticket;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
+use App\Models\User;
 
 class TicketController extends Controller
 {
+    public function сancel(Ticket $ticket)
+    {
+        
+        
+        $ticket->user_id = null;
+        $ticket->save()   ;
+        return response()->json(["ticket"=>$ticket]);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -54,7 +64,18 @@ class TicketController extends Controller
      */
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
-        
+        $user = User::find($request->user_id);
+        if ($user->role != 'user') {
+            return response()->json(['errors' => ['user_id' => ['Записать на прием можно только пациента.']]], 422);
+        }
+
+        if ($ticket->user_id) {
+            return response()->json(['errors' => ['user_id' => ['Талон занят.']]], 422);
+        }
+
+        $ticket->user_id = $request->user_id;
+        $ticket->save();
+        return response()->json(["ticket" => $ticket]);
     }
 
     /**
