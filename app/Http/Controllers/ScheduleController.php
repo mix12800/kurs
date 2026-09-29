@@ -22,7 +22,7 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        return response()->json(["schedules" => Schedule::with("user.spec")->get()]);
+        return response()->json(["schedules" => Schedule::with("doctor.spec")->get()]);
     }
 
     /**

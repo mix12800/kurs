@@ -729,6 +729,46 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Авторизация успешная доктор",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('token');\r\n    pm.collectionVariables.set('doctor_token', jsonData.token);\r\n    pm.collectionVariables.set('doctor_id', jsonData.user.id);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "login",
+                  "value": "doctor",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "doctor",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}auth",
+              "host": [
+                "{{server}}auth"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -820,6 +860,61 @@
                 {
                   "key": "token",
                   "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "{{$randomWord}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}spec",
+              "host": [
+                "{{server}}spec"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Добавление специальности недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
                   "type": "string"
                 }
               ]
@@ -1127,6 +1222,64 @@
                 {
                   "key": "token",
                   "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "{{$randomWord}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Редактирование специальности недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
                   "type": "string"
                 }
               ]
@@ -1505,60 +1658,6 @@
           "response": []
         },
         {
-          "name": "Получить специальность не существующая специальность",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(404);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Spec] 0\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{server}}spec/0",
-              "host": [
-                "{{server}}spec"
-              ],
-              "path": [
-                "0"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
           "name": "Получить специальность недоступный по правам пользователя",
           "event": [
             {
@@ -1607,6 +1706,108 @@
               ],
               "path": [
                 "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить специальность недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить специальность не существующая специальность",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Spec] 0\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec/0",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "0"
               ]
             }
           },
@@ -1749,6 +1950,54 @@
                 {
                   "key": "token",
                   "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удаление специальности недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
                   "type": "string"
                 }
               ]
@@ -1985,6 +2234,91 @@
                 {
                   "key": "token",
                   "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "{{$randomUUID}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создание пользователя недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
                   "type": "string"
                 }
               ]
@@ -2942,6 +3276,94 @@
           "response": []
         },
         {
+          "name": "Редактирование пользователя себя Врач успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('user');\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "doctor",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/{{doctor_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{doctor_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Редактирование пользователя админ успех",
           "event": [
             {
@@ -3115,6 +3537,51 @@
                 {
                   "key": "token",
                   "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user",
+              "host": [
+                "{{server}}user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить всех пользователей недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
                   "type": "string"
                 }
               ]
@@ -3401,6 +3868,54 @@
           "response": []
         },
         {
+          "name": "Получить пользователя себя Врача успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('user');\r\n}); "
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}user/{{doctor_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{doctor_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Получить пользователя успех админ",
           "event": [
             {
@@ -3578,6 +4093,70 @@
                   "value": "1",
                   "type": "text",
                   "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}/role",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}",
+                "role"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменение роли пользователя недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "role",
+                  "value": "doctor",
+                  "type": "text"
+                },
+                {
+                  "key": "specialty_id",
+                  "value": "1",
+                  "type": "text"
                 }
               ]
             },
@@ -4084,6 +4663,66 @@
           "response": []
         },
         {
+          "name": "Добавление кабинета к доктору недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "{{$randomPhoneNumber}}",
+                  "type": "text"
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office",
+              "host": [
+                "{{server}}office"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Добавление кабинета к доктору пустые поля",
           "event": [
             {
@@ -4565,6 +5204,69 @@
           "response": []
         },
         {
+          "name": "редактирование кабинета недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "num",
+                  "value": "{{$randomPhoneNumber}}",
+                  "type": "text"
+                },
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "редактирование кабинета пустые поля",
           "event": [
             {
@@ -4951,6 +5653,51 @@
           "response": []
         },
         {
+          "name": "Получить все кабинеты недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office",
+              "host": [
+                "{{server}}office"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Получить все кабинеты успех",
           "event": [
             {
@@ -5085,6 +5832,54 @@
                 {
                   "key": "token",
                   "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить кабинет недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
                   "type": "string"
                 }
               ]
@@ -5300,6 +6095,54 @@
                 {
                   "key": "token",
                   "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удалить кабинет недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
                   "type": "string"
                 }
               ]
@@ -5590,6 +6433,81 @@
                   "value": "15",
                   "type": "text",
                   "uuid": "0af9fccc-a223-4b9e-b2f2-bd21b4b07754"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
                 }
               ]
             },
@@ -6437,17 +7355,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData).to.have.property('schedule');\r",
-                  "    pm.collectionVariables.set('schedule_id', jsonData.schedule.id);\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('schedule');\r\n    pm.collectionVariables.set('schedule_id', jsonData.schedule.id);\r\n});"
+                ]
               }
             }
           ],
@@ -6480,32 +7391,27 @@
                 {
                   "key": "doctor_id",
                   "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
                   "value": "01.02.2100",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
                   "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
                   "value": "10:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "15",
-                  "type": "text",
-                  "uuid": "fef533c4-63bc-4907-95ea-15e34aff5128"
+                  "type": "text"
                 }
               ]
             },
@@ -6679,6 +7585,84 @@
                   "value": "15",
                   "type": "text",
                   "uuid": "4ec0edbf-7be7-407f-928e-2f48e0334e6e"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменить расписание недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
                 }
               ]
             },
@@ -7947,6 +8931,64 @@
           "response": []
         },
         {
+          "name": "запись пациента на прием недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "user_id",
+                  "value": "3",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}ticket/{{ticket_id}}",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "запись пациента на прием уже занято",
           "event": [
             {
@@ -8179,6 +9221,64 @@
           "response": []
         },
         {
+          "name": "запись пациента на прием чужой пациент",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "user_id",
+                  "value": "3",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}ticket/{{ticket_id}}",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "запись пациента на прием успех",
           "event": [
             {
@@ -8230,6 +9330,516 @@
                 "{{server}}ticket"
               ],
               "path": [
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "получить свои талоны",
+      "item": [
+        {
+          "name": "получить свои талоны не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}tickets/{{user_id}}",
+              "host": [
+                "{{server}}tickets"
+              ],
+              "path": [
+                "{{user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить свои талоны недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}tickets/{{user_id}}",
+              "host": [
+                "{{server}}tickets"
+              ],
+              "path": [
+                "{{user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить свои талоны не существующий пациент",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\User] 0\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}tickets/0",
+              "host": [
+                "{{server}}tickets"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить свои талоны чужой пациент",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}tickets/3",
+              "host": [
+                "{{server}}tickets"
+              ],
+              "path": [
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить свои талоны успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('tickets');\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}tickets/{{user_id}}",
+              "host": [
+                "{{server}}tickets"
+              ],
+              "path": [
+                "{{user_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "получить свой талон по ID",
+      "item": [
+        {
+          "name": "получить свой талон по ID не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}ticket/{{ticket_id}}",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить свой талон по ID недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}my/ticket/{{ticket_id}}",
+              "host": [
+                "{{server}}my"
+              ],
+              "path": [
+                "ticket",
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить свой талон по ID не существующий талон",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Ticket] 0\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}my/ticket/0",
+              "host": [
+                "{{server}}my"
+              ],
+              "path": [
+                "ticket",
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить свой талон по ID чужой пациент",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "user_id",
+                  "value": "3",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}my/ticket/3",
+              "host": [
+                "{{server}}my"
+              ],
+              "path": [
+                "ticket",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить свой талон по ID успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('ticket');\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}my/ticket/{{ticket_id}}",
+              "host": [
+                "{{server}}my"
+              ],
+              "path": [
+                "ticket",
                 "{{ticket_id}}"
               ]
             }
@@ -8308,6 +9918,55 @@
                 {
                   "key": "token",
                   "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}ticket/сancel/1",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "сancel",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Отмена запись на прием недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
                   "type": "string"
                 }
               ]
@@ -8431,7 +10090,7 @@
           "response": []
         },
         {
-          "name": "Отмена запись на прием не существующий талон Copy",
+          "name": "Отмена запись на прием успех",
           "event": [
             {
               "listen": "test",
@@ -8454,7 +10113,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{old_user_token}}",
+                  "value": "{{user_token}}",
                   "type": "string"
                 }
               ]
@@ -9093,6 +10752,14 @@
     },
     {
       "key": "old_user_token",
+      "value": ""
+    },
+    {
+      "key": "doctor_token",
+      "value": ""
+    },
+    {
+      "key": "doctor_id",
       "value": ""
     }
   ]

@@ -12,6 +12,24 @@ use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
+
+    public function myticket(Ticket $ticket)
+    {
+        if ($ticket->user_id != Auth::user()->id && Auth::user()->role != 'admin') {
+            return response()->json(['error' => ['code' => 403, 'message' => 'Доступ запрещен']], 403);
+        }
+        return response()->json(['ticket' => Ticket::where('id', $ticket->id)->with('user', 'schedule.doctor.spec')->get()]);
+    }
+
+    public function mytickets(User $user)
+    {
+        if ($user->id != Auth::user()->id && Auth::user()->role != 'admin') {
+            return response()->json(['error' => ['code' => 403, 'message' => 'Доступ запрещен']], 403);
+        }
+
+        return response()->json(['tickets' => Ticket::where('user_id', $user->id)->with('schedule.doctor.spec')->get()]);
+    }
+
     public function сancel(Ticket $ticket)
     {
         if ($ticket->user_id != Auth::user()->id && Auth::user()->role != 'admin') {
@@ -73,6 +91,10 @@ class TicketController extends Controller
      */
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
+        if (Auth::user()->role == 'user' && Auth::id() != $request->user_id) {
+            return response()->json(['error' => ['code' => 403, 'message' => 'Доступ запрещен']], 403);
+        }
+
         $user = User::find($request->user_id);
         if ($user->role != 'user') {
             return response()->json(['errors' => ['user_id' => ['Записать на прием можно только пациента.']]], 422);
