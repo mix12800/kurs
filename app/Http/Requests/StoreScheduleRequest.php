@@ -28,6 +28,7 @@ class StoreScheduleRequest extends FormRequest
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
             'interval'=>'required|regex:/^\d{2}$/',
+            'office_id'=>'required|exists:offices,id',
         ];
     }
 }

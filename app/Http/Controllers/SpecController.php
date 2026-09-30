@@ -54,6 +54,13 @@ class SpecController extends Controller
      */
     public function update(UpdateSpecRequest $request, Spec $Spec)
     {
+        $is_spec = Spec::where('name', $request->name)->first();
+
+        if ($is_spec && $is_spec->id != $Spec->id) {
+            return response()->json(['errors' => ['name' => ['Такое значение поля Название уже существует.']]], 422);
+        }
+
+
         $Spec->update($request->all());
         return response()->json(['spec' => $Spec]);
     }

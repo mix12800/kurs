@@ -23,7 +23,7 @@ class UpdateSpecRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'unique:specs',
+            'name' => 'required',
         ];
     }
 }

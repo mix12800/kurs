@@ -23,8 +23,7 @@ class UpdateOfficeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'num' => 'required',
-            'doctor_id' => 'required|exists:users,id',
+            // 
         ];
     }
 }

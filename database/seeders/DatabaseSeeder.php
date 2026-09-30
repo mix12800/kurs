@@ -64,17 +64,17 @@ class DatabaseSeeder extends Seeder
             'name' => 'Терапевт',
         ]);
 
-        foreach ($users as  $user) {
+        foreach ($users as $user) {
             User::create($user);
         }
 
         Office::create([
             'num' => '101',
-            'doctor_id' => '2',
         ]);
 
         Schedule::create([
             "doctor_id" => '2',
+            "office_id"=>'1',
             "date" => '01.01.2100',
             "start_time" => '09:00',
             "end_time" => '10:00',

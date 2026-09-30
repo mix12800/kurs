@@ -41,4 +41,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Spec::class);
     }
+
+    public function office()
+    {
+        return $this->hasMany(Office::class);
+    }
 }

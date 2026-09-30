@@ -22,6 +22,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('schedule', [ScheduleController::class, 'index']);
     Route::delete('user/{user}', [UserController::class, 'destroy']);
     Route::get('ticket/{schedule}', [TicketController::class, 'index']);
+    Route::get('logout', [UserController::class, 'logout']);
+
+
+    Route::middleware('role:doctor')->group(function () {
+        Route::get('my/schedule', [ScheduleController::class, 'myschedule']);
+    });
+
 
     Route::middleware('role:admin|user')->group(function () {
         Route::patch('ticket/{ticket}', [TicketController::class, 'update']);
@@ -38,3 +45,4 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('schedule', ScheduleController::class)->except('index');
     });
 });
+

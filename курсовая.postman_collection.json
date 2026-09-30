@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "c99a3239-dec5-4d19-897a-8b0a6be55372",
+    "_postman_id": "62343aa7-d63c-4f6e-a560-12aa96104205",
     "name": "курсовая",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "49678141"
@@ -277,6 +277,81 @@
           "response": []
         },
         {
+          "name": "Регистрация валидация email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.email[0]).to.eql('Значение поля E-Mail адрес должно быть действительным электронным адресом.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "ivan",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "ivan",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}registration",
+              "host": [
+                "{{server}}registration"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Регистрация валидация регулярные 1",
           "event": [
             {
@@ -403,81 +478,6 @@
                 {
                   "key": "email",
                   "value": "ivan@email.com",
-                  "type": "text"
-                },
-                {
-                  "key": "login",
-                  "value": "ivan",
-                  "type": "text"
-                },
-                {
-                  "key": "password",
-                  "value": "12345678",
-                  "type": "text"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}registration",
-              "host": [
-                "{{server}}registration"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Регистрация валидация email",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.email[0]).to.eql('Значение поля E-Mail адрес должно быть действительным электронным адресом.');\r\n});\r\n"
-                ]
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "last_name",
-                  "value": "Иванов",
-                  "type": "text"
-                },
-                {
-                  "key": "first_name",
-                  "value": "Иван",
-                  "type": "text"
-                },
-                {
-                  "key": "middle_name",
-                  "value": "Иванович",
-                  "type": "text"
-                },
-                {
-                  "key": "phone",
-                  "value": "+79999999999",
-                  "type": "text"
-                },
-                {
-                  "key": "email",
-                  "value": "ivan",
                   "type": "text"
                 },
                 {
@@ -1378,21 +1378,67 @@
           "response": []
         },
         {
+          "name": "Редактирование специальности валидация пустое поле",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.name[0]).to.eql(\"Поле Название обязательно.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{server}}spec/{{spec_id}}",
+              "host": [
+                "{{server}}spec"
+              ],
+              "path": [
+                "{{spec_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Редактирование специальности валидация уже существует",
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.name[0]).to.eql(\"Такое значение поля Название уже существует.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.name[0]).to.eql(\"Такое значение поля Название уже существует.\");\r\n});"
+                ]
               }
             }
           ],
@@ -3182,21 +3228,103 @@
           "response": []
         },
         {
+          "name": "Редактирование пользователя уже занят логин и Email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.login[0]).to.eql(\"Такое значение поля Логин уже существует.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "Иванов",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Иван",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "admin",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "admin",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/{{user_id}}",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Редактирование пользователя себя успех",
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData).to.have.property('user');\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('user');\r\n});"
+                ]
               }
             }
           ],
@@ -3346,7 +3474,7 @@
                 },
                 {
                   "key": "password",
-                  "value": "12345678",
+                  "value": "doctor",
                   "type": "text"
                 }
               ]
@@ -3369,16 +3497,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData).to.have.property('user');\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('user');\r\n});"
+                ]
               }
             }
           ],
@@ -4317,6 +4439,77 @@
           "response": []
         },
         {
+          "name": "Изменение роли пользователя, роль «Доктор» не существующая специальность",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.errors.spec_id[0]).to.eql(\"Значение поля Специальность не существует.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "role",
+                  "value": "doctor",
+                  "type": "text"
+                },
+                {
+                  "key": "spec_id",
+                  "value": "0",
+                  "type": "text",
+                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}user/{{create_user_id}}/role",
+              "host": [
+                "{{server}}user"
+              ],
+              "path": [
+                "{{create_user_id}}",
+                "role"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Изменение роли пользователя, роль «Доктор» без указания id специальности",
           "event": [
             {
@@ -4372,77 +4565,6 @@
                   "type": "text",
                   "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290",
                   "disabled": true
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}user/{{create_user_id}}/role",
-              "host": [
-                "{{server}}user"
-              ],
-              "path": [
-                "{{create_user_id}}",
-                "role"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Изменение роли пользователя, роль «Доктор» не существующая специальность",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.spec_id[0]).to.eql(\"Значение поля Специальность не существует.\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "role",
-                  "value": "doctor",
-                  "type": "text"
-                },
-                {
-                  "key": "spec_id",
-                  "value": "0",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
                 }
               ]
             },
@@ -4533,24 +4655,18 @@
       ]
     },
     {
-      "name": "Добавление кабинета к доктору",
+      "name": "Добавление кабинета",
       "item": [
         {
-          "name": "Добавление кабинета к доктору не авторизован",
+          "name": "Добавление кабинета не авторизован",
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(401);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
               }
             }
           ],
@@ -4575,14 +4691,8 @@
               "formdata": [
                 {
                   "key": "num",
-                  "value": "{{$randomPhoneNumber}}",
+                  "value": "102",
                   "type": "text"
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
                 }
               ]
             },
@@ -4596,21 +4706,15 @@
           "response": []
         },
         {
-          "name": "Добавление кабинета к доктору недоступный по правам пользователя",
+          "name": "Добавление кабинета недоступный по правам пользователя",
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(403);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
               }
             }
           ],
@@ -4642,14 +4746,8 @@
               "formdata": [
                 {
                   "key": "num",
-                  "value": "{{$randomPhoneNumber}}",
+                  "value": "102",
                   "type": "text"
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
                 }
               ]
             },
@@ -4663,7 +4761,7 @@
           "response": []
         },
         {
-          "name": "Добавление кабинета к доктору недоступный по правам Врача",
+          "name": "Добавление кабинета недоступный по правам Врача",
           "event": [
             {
               "listen": "test",
@@ -4723,22 +4821,15 @@
           "response": []
         },
         {
-          "name": "Добавление кабинета к доктору пустые поля",
+          "name": "Добавление кабинета пустое поле",
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.num[0]).to.eql(\"Поле Номер обязательно.\");\r",
-                  "});\r",
-                  ""
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.num[0]).to.eql(\"Поле Номер обязательно.\");\r\n});\r\n"
+                ]
               }
             }
           ],
@@ -4773,13 +4864,6 @@
                   "value": "{{$randomPhoneNumber}}",
                   "type": "text",
                   "disabled": true
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290",
-                  "disabled": true
                 }
               ]
             },
@@ -4793,22 +4877,15 @@
           "response": []
         },
         {
-          "name": "Добавление кабинета к доктору не существующий врач",
+          "name": "Добавление кабинета уже существует",
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Значение поля Доктор не существует.\");\r",
-                  "});\r",
-                  ""
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.num[0]).to.eql(\"Такое значение поля Номер уже существует.\");\r\n});\r\n"
+                ]
               }
             }
           ],
@@ -4840,14 +4917,8 @@
               "formdata": [
                 {
                   "key": "num",
-                  "value": "{{$randomPhoneNumber}}",
+                  "value": "101",
                   "type": "text"
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "0",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
                 }
               ]
             },
@@ -4861,90 +4932,15 @@
           "response": []
         },
         {
-          "name": "Добавление кабинета к доктору врач уже в другом кабинете",
+          "name": "Добавление кабинета успех",
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Такое значение поля Доктор уже существует.\");\r",
-                  "});\r",
-                  ""
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "num",
-                  "value": "102",
-                  "type": "text"
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "2",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}office",
-              "host": [
-                "{{server}}office"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Добавление кабинета к пациенту",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
                 "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Нельзя добавить пациента в кабинет.\");\r",
-                  "});\r",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('office');\r\n    pm.collectionVariables.set('office_id', jsonData.office.id);\r\n});\r\n"
+                ]
               }
             }
           ],
@@ -4978,81 +4974,6 @@
                   "key": "num",
                   "value": "102",
                   "type": "text"
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "{{user_id}}",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}office",
-              "host": [
-                "{{server}}office"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Добавление кабинета к доктору успех",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData).to.have.property('office');\r",
-                  "    pm.collectionVariables.set('office_id', jsonData.office.id);\r",
-                  "});\r",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "num",
-                  "value": "102",
-                  "type": "text"
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
                 }
               ]
             },
@@ -5076,16 +4997,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(401);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
               }
             }
           ],
@@ -5112,12 +5027,6 @@
                   "key": "num",
                   "value": "{{$randomPhoneNumber}}",
                   "type": "text"
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
                 }
               ]
             },
@@ -5139,16 +5048,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(403);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
               }
             }
           ],
@@ -5182,12 +5085,6 @@
                   "key": "num",
                   "value": "{{$randomPhoneNumber}}",
                   "type": "text"
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
                 }
               ]
             },
@@ -5246,11 +5143,6 @@
                   "key": "num",
                   "value": "{{$randomPhoneNumber}}",
                   "type": "text"
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text"
                 }
               ]
             },
@@ -5267,95 +5159,15 @@
           "response": []
         },
         {
-          "name": "редактирование кабинета пустые поля",
+          "name": "редактирование кабинета не существующий кабинет",
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.num[0]).to.eql(\"Поле Номер обязательно.\");\r",
-                  "});\r",
-                  ""
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "num",
-                  "value": "{{$randomPhoneNumber}}",
-                  "type": "text",
-                  "disabled": true
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290",
-                  "disabled": true
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}office/{{office_id}}",
-              "host": [
-                "{{server}}office"
-              ],
-              "path": [
-                "{{office_id}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "редактирование кабинета не существующий врач",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
                 "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Значение поля Доктор не существует.\");\r",
-                  "});\r",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Office] 0\");\r\n});\r\n"
+                ]
               }
             }
           ],
@@ -5389,44 +5201,31 @@
                   "key": "num",
                   "value": "{{$randomPhoneNumber}}",
                   "type": "text"
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "0",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
                 }
               ]
             },
             "url": {
-              "raw": "{{server}}office/{{office_id}}",
+              "raw": "{{server}}office/0",
               "host": [
                 "{{server}}office"
               ],
               "path": [
-                "{{office_id}}"
+                "0"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "редактирование кабинета к пациенту",
+          "name": "редактирование кабинета уже существует",
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Нельзя добавить пациента в кабинет.\");\r",
-                  "});\r",
-                  ""
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.name[0]).to.eql(\"Такое значение поля Номер уже существует.\");\r\n});\r\n"
+                ]
               }
             }
           ],
@@ -5458,14 +5257,8 @@
               "formdata": [
                 {
                   "key": "num",
-                  "value": "{{$randomPhoneNumber}}",
+                  "value": "101",
                   "type": "text"
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "{{user_id}}",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
                 }
               ]
             },
@@ -5487,17 +5280,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData).to.have.property('office');\r",
-                  "});\r",
-                  ""
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('office');\r\n});\r\n"
+                ]
               }
             }
           ],
@@ -5531,12 +5317,6 @@
                   "key": "num",
                   "value": "{{$randomPhoneNumber}}",
                   "type": "text"
-                },
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "feec598a-4e1d-43ce-a9fa-2a1549656290"
                 }
               ]
             },
@@ -6015,24 +5795,18 @@
       ]
     },
     {
-      "name": "Удалить кабинет",
+      "name": "Создать расписание",
       "item": [
         {
-          "name": "Удалить кабинет не авторизован",
+          "name": "Создать расписание не авторизован",
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(401);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
               }
             }
           ],
@@ -6045,81 +5819,59 @@
             "auth": {
               "type": "noauth"
             },
-            "method": "DELETE",
+            "method": "POST",
             "header": [
               {
                 "key": "Accept",
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{server}}office/{{office_id}}",
-              "host": [
-                "{{server}}office"
-              ],
-              "path": [
-                "{{office_id}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Удалить кабинет недоступный по правам пользователя",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(403);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
+            "body": {
+              "mode": "formdata",
+              "formdata": [
                 {
-                  "key": "token",
-                  "value": "{{user_token}}",
-                  "type": "string"
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "1",
+                  "type": "text"
                 }
               ]
             },
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
             "url": {
-              "raw": "{{server}}office/{{office_id}}",
+              "raw": "{{server}}schedule",
               "host": [
-                "{{server}}office"
-              ],
-              "path": [
-                "{{office_id}}"
+                "{{server}}schedule"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "Удалить кабинет недоступный по правам Врача",
+          "name": "Создать расписание недоступный по правам пользователя",
           "event": [
             {
               "listen": "test",
@@ -6142,253 +5894,6 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{doctor_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{server}}office/{{office_id}}",
-              "host": [
-                "{{server}}office"
-              ],
-              "path": [
-                "{{office_id}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Удалить кабинет не существующий кабинет",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(404);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Office] 0\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{user_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{server}}office/0",
-              "host": [
-                "{{server}}office"
-              ],
-              "path": [
-                "0"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Удалить кабинет успех",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.message).to.eql(\"ok\");\r",
-                  "});\r",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{server}}office/{{office_id}}",
-              "host": [
-                "{{server}}office"
-              ],
-              "path": [
-                "{{office_id}}"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Создать расписание",
-      "item": [
-        {
-          "name": "Создать расписание не авторизован",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(401);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
-                },
-                {
-                  "key": "date",
-                  "value": "01.10.2026",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
-                },
-                {
-                  "key": "start_time",
-                  "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
-                },
-                {
-                  "key": "end_time",
-                  "value": "16:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
-                },
-                {
-                  "key": "interval",
-                  "value": "15",
-                  "type": "text",
-                  "uuid": "8a11ac5e-ea1c-4a2a-b2f0-8cbd2bffd3c9"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}schedule",
-              "host": [
-                "{{server}}schedule"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Создать расписание недоступный по правам пользователя",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(403);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
                   "value": "{{user_token}}",
                   "type": "string"
                 }
@@ -6407,32 +5912,32 @@
                 {
                   "key": "doctor_id",
                   "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
                   "value": "01.10.2026",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
                   "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
                   "value": "16:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "15",
-                  "type": "text",
-                  "uuid": "0af9fccc-a223-4b9e-b2f2-bd21b4b07754"
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "1",
+                  "type": "text"
                 }
               ]
             },
@@ -6508,6 +6013,11 @@
                   "key": "interval",
                   "value": "15",
                   "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "1",
+                  "type": "text"
                 }
               ]
             },
@@ -6581,16 +6091,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Значение поля Доктор не существует.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Значение поля Доктор не существует.\");\r\n});"
+                ]
               }
             }
           ],
@@ -6623,32 +6127,32 @@
                 {
                   "key": "doctor_id",
                   "value": "0",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
                   "value": "01.10.2026",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
                   "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
                   "value": "16:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "15",
-                  "type": "text",
-                  "uuid": "07b24da9-4c91-4eee-8dba-997285c86320"
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "1",
+                  "type": "text"
                 }
               ]
             },
@@ -6662,623 +6166,15 @@
           "response": []
         },
         {
-          "name": "Создать расписание для пациента",
+          "name": "Создать расписание не существующий кубинет",
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Нельзя добавить пациента в расписание.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "{{user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
-                },
-                {
-                  "key": "date",
-                  "value": "01.10.2026",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
-                },
-                {
-                  "key": "start_time",
-                  "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
-                },
-                {
-                  "key": "end_time",
-                  "value": "16:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
-                },
-                {
-                  "key": "interval",
-                  "value": "15",
-                  "type": "text",
-                  "uuid": "2e125966-136c-4ac1-99f7-bc8176b679c4"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}schedule",
-              "host": [
-                "{{server}}schedule"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Создать расписание Некорректная дата",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
                 "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.date[0]).to.eql(\"Значение поля Дата должно быть корректной датой.\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
-                },
-                {
-                  "key": "date",
-                  "value": "0000",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
-                },
-                {
-                  "key": "start_time",
-                  "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
-                },
-                {
-                  "key": "end_time",
-                  "value": "16:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
-                },
-                {
-                  "key": "interval",
-                  "value": "15",
-                  "type": "text",
-                  "uuid": "4741103b-8fa2-4ef9-935c-516f4de695eb"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}schedule",
-              "host": [
-                "{{server}}schedule"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Создать расписание прошлая дата",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.date[0]).to.eql(\"Значение поля Дата должно быть датой после или равной today.\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
-                },
-                {
-                  "key": "date",
-                  "value": "01.01.2000",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
-                },
-                {
-                  "key": "start_time",
-                  "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
-                },
-                {
-                  "key": "end_time",
-                  "value": "16:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
-                },
-                {
-                  "key": "interval",
-                  "value": "15",
-                  "type": "text",
-                  "uuid": "cbb92f3d-73b2-4d80-84aa-ea6e24e679f4"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}schedule",
-              "host": [
-                "{{server}}schedule"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Создать расписание Некорректное время смены",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.start_time[0]).to.eql(\"Значение поля Начало смены должно соответствовать формату даты: H:i.\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
-                },
-                {
-                  "key": "date",
-                  "value": "01.01.2100",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
-                },
-                {
-                  "key": "start_time",
-                  "value": "94863",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
-                },
-                {
-                  "key": "end_time",
-                  "value": "643564",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
-                },
-                {
-                  "key": "interval",
-                  "value": "15",
-                  "type": "text",
-                  "uuid": "ab4857d8-d864-4d9a-aa0a-8162bd0ee03e"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}schedule",
-              "host": [
-                "{{server}}schedule"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Создать расписание Время пресекается",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время конца не должно пересекаться с началом.\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
-                },
-                {
-                  "key": "date",
-                  "value": "01.01.2100",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
-                },
-                {
-                  "key": "start_time",
-                  "value": "15:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
-                },
-                {
-                  "key": "end_time",
-                  "value": "09:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
-                },
-                {
-                  "key": "interval",
-                  "value": "15",
-                  "type": "text",
-                  "uuid": "580e4a0f-efb9-471e-98e6-84372c1e1032"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}schedule",
-              "host": [
-                "{{server}}schedule"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Создать расписание Некорректное время интервала",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.interval[0]).to.eql(\"Значение поля Интервал имеет некорректный формат.\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
-                },
-                {
-                  "key": "date",
-                  "value": "01.01.2100",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
-                },
-                {
-                  "key": "start_time",
-                  "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
-                },
-                {
-                  "key": "end_time",
-                  "value": "15:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
-                },
-                {
-                  "key": "interval",
-                  "value": "100",
-                  "type": "text",
-                  "uuid": "5f997c88-3df7-4cfc-af56-ad720a07d97e"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}schedule",
-              "host": [
-                "{{server}}schedule"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Создать расписание время не чётное интервалу",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время должно быть четным интервалу.\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "doctor_id",
-                  "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
-                },
-                {
-                  "key": "date",
-                  "value": "01.01.2100",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
-                },
-                {
-                  "key": "start_time",
-                  "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
-                },
-                {
-                  "key": "end_time",
-                  "value": "10:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
-                },
-                {
-                  "key": "interval",
-                  "value": "11",
-                  "type": "text",
-                  "uuid": "5f997c88-3df7-4cfc-af56-ad720a07d97e"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}schedule",
-              "host": [
-                "{{server}}schedule"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Создать расписание смена уже существует",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.date[0]).to.eql(\"Смена этого врача уже существует на этот день.\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.office_id[0]).to.eql(\"Значение поля Кабиент не существует.\");\r\n});"
+                ]
               }
             }
           ],
@@ -7311,32 +6207,752 @@
                 {
                   "key": "doctor_id",
                   "value": "2",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
-                  "value": "01.01.2100",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "value": "01.10.2026",
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
                   "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
-                  "value": "15:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "value": "16:00",
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "15",
-                  "type": "text",
-                  "uuid": "58edccdc-99ed-4544-8f17-306514aed215"
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "0",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание для пациента",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Нельзя добавить пациента в расписание.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание Некорректная дата",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.date[0]).to.eql(\"Значение поля Дата должно быть корректной датой.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "0000",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание прошлая дата",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.date[0]).to.eql(\"Значение поля Дата должно быть датой после или равной today.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2000",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание Некорректное время смены",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.start_time[0]).to.eql(\"Значение поля Начало смены должно соответствовать формату даты: H:i.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "94863",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "643564",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание Время пресекается",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время конца не должно пересекаться с началом.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "15:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание Некорректное время интервала",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.interval[0]).to.eql(\"Значение поля Интервал имеет некорректный формат.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "15:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "100",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание время не чётное интервалу",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время должно быть четным интервалу.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "10:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "11",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание смена уже существует на это-то день",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.date[0]).to.eql(\"Смена этого врача уже существует на этот день.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "2",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "15:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule",
+              "host": [
+                "{{server}}schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Создать расписание кабинет уже занять на это день",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.date[0]).to.eql(\"Кабинет уже занят на этот день.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "2",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "15:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "1",
+                  "type": "text"
                 }
               ]
             },
@@ -7412,6 +7028,11 @@
                   "key": "interval",
                   "value": "15",
                   "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
                 }
               ]
             },
@@ -7435,16 +7056,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(401);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
               }
             }
           ],
@@ -7470,32 +7085,32 @@
                 {
                   "key": "doctor_id",
                   "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
                   "value": "01.10.2026",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
                   "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
                   "value": "16:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "15",
-                  "type": "text",
-                  "uuid": "d2ae5882-c712-4115-b12d-554184da8faa"
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
                 }
               ]
             },
@@ -7517,16 +7132,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(403);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
               }
             }
           ],
@@ -7559,32 +7168,32 @@
                 {
                   "key": "doctor_id",
                   "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
                   "value": "01.10.2026",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
                   "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
                   "value": "16:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "15",
-                  "type": "text",
-                  "uuid": "4ec0edbf-7be7-407f-928e-2f48e0334e6e"
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
                 }
               ]
             },
@@ -7663,6 +7272,11 @@
                   "key": "interval",
                   "value": "15",
                   "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
                 }
               ]
             },
@@ -7684,16 +7298,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Значение поля Доктор не существует.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Значение поля Доктор не существует.\");\r\n});"
+                ]
               }
             }
           ],
@@ -7726,32 +7334,115 @@
                 {
                   "key": "doctor_id",
                   "value": "0",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
                   "value": "01.10.2026",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
                   "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
                   "value": "16:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "15",
-                  "type": "text",
-                  "uuid": "ba4f46b4-c6d1-4cda-a3db-fb5904ed5db1"
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменить расписание не существующий кабинет",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.office_id[0]).to.eql(\"Значение поля Кабиент не существует.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{doctor_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.10.2026",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "16:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "0",
+                  "type": "text"
                 }
               ]
             },
@@ -7830,6 +7521,11 @@
                   "key": "interval",
                   "value": "15",
                   "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
                 }
               ]
             },
@@ -7851,16 +7547,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Нельзя добавить пациента в расписание.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Нельзя добавить пациента в расписание.\");\r\n});"
+                ]
               }
             }
           ],
@@ -7893,32 +7583,32 @@
                 {
                   "key": "doctor_id",
                   "value": "{{user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
                   "value": "01.10.2026",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
                   "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
                   "value": "16:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "15",
-                  "type": "text",
-                  "uuid": "822e3c1f-63bb-4a6f-88ef-a79c837eb027"
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
                 }
               ]
             },
@@ -7940,16 +7630,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.date[0]).to.eql(\"Значение поля Дата должно быть корректной датой.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.date[0]).to.eql(\"Значение поля Дата должно быть корректной датой.\");\r\n});"
+                ]
               }
             }
           ],
@@ -7982,32 +7666,32 @@
                 {
                   "key": "doctor_id",
                   "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
                   "value": "0000",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
                   "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
                   "value": "16:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "15",
-                  "type": "text",
-                  "uuid": "7cf05d72-51e6-41ee-ad46-f634309823b4"
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
                 }
               ]
             },
@@ -8029,16 +7713,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.start_time[0]).to.eql(\"Значение поля Начало смены должно соответствовать формату даты: H:i.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.start_time[0]).to.eql(\"Значение поля Начало смены должно соответствовать формату даты: H:i.\");\r\n});"
+                ]
               }
             }
           ],
@@ -8071,32 +7749,32 @@
                 {
                   "key": "doctor_id",
                   "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
                   "value": "01.01.2100",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
                   "value": "0000",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
                   "value": "0000",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "15",
-                  "type": "text",
-                  "uuid": "5173ac3e-7d4b-4eae-aae5-08d6a76b4873"
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
                 }
               ]
             },
@@ -8118,16 +7796,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время конца не должно пересекаться с началом.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время конца не должно пересекаться с началом.\");\r\n});"
+                ]
               }
             }
           ],
@@ -8160,32 +7832,32 @@
                 {
                   "key": "doctor_id",
                   "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
                   "value": "01.01.2100",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
                   "value": "10:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
                   "value": "09:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "15",
-                  "type": "text",
-                  "uuid": "4fd1b63c-b86e-4b7f-a932-b5ebe33185f5"
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
                 }
               ]
             },
@@ -8207,16 +7879,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.interval[0]).to.eql(\"Значение поля Интервал имеет некорректный формат.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.interval[0]).to.eql(\"Значение поля Интервал имеет некорректный формат.\");\r\n});"
+                ]
               }
             }
           ],
@@ -8249,32 +7915,32 @@
                 {
                   "key": "doctor_id",
                   "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
                   "value": "01.01.2100",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
                   "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
                   "value": "10:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "gg",
-                  "type": "text",
-                  "uuid": "4fd1b63c-b86e-4b7f-a932-b5ebe33185f5"
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
                 }
               ]
             },
@@ -8296,16 +7962,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r",
-                  "    pm.response.to.have.status(422);\r",
-                  "    let jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время должно быть четным интервалу.\");\r",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время должно быть четным интервалу.\");\r\n});"
+                ]
               }
             }
           ],
@@ -8338,32 +7998,32 @@
                 {
                   "key": "doctor_id",
                   "value": "{{create_user_id}}",
-                  "type": "text",
-                  "uuid": "4235d3c7-30bd-44fb-86a8-b071e56660d5"
+                  "type": "text"
                 },
                 {
                   "key": "date",
                   "value": "01.01.2100",
-                  "type": "text",
-                  "uuid": "a2ad727f-7cff-4041-93c7-66eea7c083af"
+                  "type": "text"
                 },
                 {
                   "key": "start_time",
                   "value": "09:00",
-                  "type": "text",
-                  "uuid": "6b3dfef8-4dc3-461e-842d-403b85882226"
+                  "type": "text"
                 },
                 {
                   "key": "end_time",
                   "value": "10:00",
-                  "type": "text",
-                  "uuid": "939c6748-ca9a-4cc7-9cbf-fdcf4e9b904f"
+                  "type": "text"
                 },
                 {
                   "key": "interval",
                   "value": "11",
-                  "type": "text",
-                  "uuid": "4fd1b63c-b86e-4b7f-a932-b5ebe33185f5"
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
                 }
               ]
             },
@@ -8380,14 +8040,14 @@
           "response": []
         },
         {
-          "name": "Изменить расписание успех",
+          "name": "Изменить расписание занятые талоны",
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.end_time[0]).to.eql(\"Время должно быть четным интервалу.\");\r\n});"
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.doctor_id[0]).to.eql(\"Нельзя изменить расписание, если запись есть.\");\r\n});"
                 ]
               }
             }
@@ -8441,6 +8101,260 @@
                 {
                   "key": "interval",
                   "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/1",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменить расписание кабинет уже занять на это день",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.date[0]).to.eql(\"Кабинет уже занят на этот день.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "08:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменить расписание смена уже существует на это-то день",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.date[0]).to.eql(\"Смена этого врача уже существует на этот день.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "2",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "08:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}schedule/{{schedule_id}}",
+              "host": [
+                "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Изменить расписание успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('schedule');\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doctor_id",
+                  "value": "{{create_user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.01.2100",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "08:00",
+                  "type": "text"
+                },
+                {
+                  "key": "end_time",
+                  "value": "09:00",
+                  "type": "text"
+                },
+                {
+                  "key": "interval",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "office_id",
+                  "value": "{{office_id}}",
                   "type": "text"
                 }
               ]
@@ -8628,9 +8542,12 @@
               }
             ],
             "url": {
-              "raw": "{{server}}schedule",
+              "raw": "{{server}}schedule/{{schedule_id}}",
               "host": [
                 "{{server}}schedule"
+              ],
+              "path": [
+                "{{schedule_id}}"
               ]
             }
           },
@@ -8727,6 +8644,196 @@
               ],
               "path": [
                 "{{schedule_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Получить своё расписание Врач",
+      "item": [
+        {
+          "name": "Получить своё расписание Врач не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}my/schedule",
+              "host": [
+                "{{server}}my"
+              ],
+              "path": [
+                "schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить расписание по ID недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}my/schedule",
+              "host": [
+                "{{server}}my"
+              ],
+              "path": [
+                "schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить расписание по ID недоступный по правам адмни",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}my/schedule",
+              "host": [
+                "{{server}}my"
+              ],
+              "path": [
+                "schedule"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить расписание по ID успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('schedules');\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}my/schedule",
+              "host": [
+                "{{server}}my"
+              ],
+              "path": [
+                "schedule"
               ]
             }
           },
@@ -9186,7 +9293,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{user_token}}",
+                  "value": "{{admin_token}}",
                   "type": "string"
                 }
               ]
@@ -9330,6 +9437,248 @@
                 "{{server}}ticket"
               ],
               "path": [
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "получить свой талон по ID",
+      "item": [
+        {
+          "name": "получить свой талон по ID не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}ticket/{{ticket_id}}",
+              "host": [
+                "{{server}}ticket"
+              ],
+              "path": [
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить свой талон по ID недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}my/ticket/{{ticket_id}}",
+              "host": [
+                "{{server}}my"
+              ],
+              "path": [
+                "ticket",
+                "{{ticket_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить свой талон по ID не существующий талон",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Ticket] 0\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}my/ticket/0",
+              "host": [
+                "{{server}}my"
+              ],
+              "path": [
+                "ticket",
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить свой талон по ID чужой пациент",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}my/ticket/1",
+              "host": [
+                "{{server}}my"
+              ],
+              "path": [
+                "ticket",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить свой талон по ID успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('ticket');\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}my/ticket/{{ticket_id}}",
+              "host": [
+                "{{server}}my"
+              ],
+              "path": [
+                "ticket",
                 "{{ticket_id}}"
               ]
             }
@@ -9562,16 +9911,6 @@
                 "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "user_id",
-                  "value": "{{user_id}}",
-                  "type": "text"
-                }
-              ]
-            },
             "url": {
               "raw": "{{server}}tickets/{{user_id}}",
               "host": [
@@ -9579,268 +9918,6 @@
               ],
               "path": [
                 "{{user_id}}"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "получить свой талон по ID",
-      "item": [
-        {
-          "name": "получить свой талон по ID не авторизован",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{server}}ticket/{{ticket_id}}",
-              "host": [
-                "{{server}}ticket"
-              ],
-              "path": [
-                "{{ticket_id}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "получить свой талон по ID недоступный по правам Врача",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{doctor_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{server}}my/ticket/{{ticket_id}}",
-              "host": [
-                "{{server}}my"
-              ],
-              "path": [
-                "ticket",
-                "{{ticket_id}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "получить свой талон по ID не существующий талон",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Ticket] 0\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{user_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{server}}my/ticket/0",
-              "host": [
-                "{{server}}my"
-              ],
-              "path": [
-                "ticket",
-                "0"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "получить свой талон по ID чужой пациент",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{user_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "user_id",
-                  "value": "3",
-                  "type": "text"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}my/ticket/3",
-              "host": [
-                "{{server}}my"
-              ],
-              "path": [
-                "ticket",
-                "3"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "получить свой талон по ID успех",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('ticket');\r\n});"
-                ]
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{user_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "user_id",
-                  "value": "{{user_id}}",
-                  "type": "text"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}my/ticket/{{ticket_id}}",
-              "host": [
-                "{{server}}my"
-              ],
-              "path": [
-                "ticket",
-                "{{ticket_id}}"
               ]
             }
           },
@@ -10097,7 +10174,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Ticket] 0\");\r\n});"
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('ticket');\r\n});"
                 ]
               }
             }
@@ -10421,6 +10498,251 @@
       ]
     },
     {
+      "name": "Удалить кабинет по ID",
+      "item": [
+        {
+          "name": "Удалить кабинет по ID не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удалить кабинет по ID недоступный по правам пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удалить кабинет по ID недоступный по правам Врача",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(403);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.error.message).to.eql(\"Доступ запрещен\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctor_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удалить кабинет по ID не существующий кабинет",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(404);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"No query results for model [App\\\\Models\\\\Office] 0\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/0",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Удалить кабинет успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"ok\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}office/{{office_id}}",
+              "host": [
+                "{{server}}office"
+              ],
+              "path": [
+                "{{office_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "Удаление пользователя",
       "item": [
         {
@@ -10681,6 +11003,94 @@
               ],
               "path": [
                 "{{create_user_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Выход из аккаунта",
+      "item": [
+        {
+          "name": "Выход из аккаунта не авторизован",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(401);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"Unauthenticated.\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}logout",
+              "host": [
+                "{{server}}logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Выход из аккаунта успех",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.message).to.eql(\"ok\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{server}}logout",
+              "host": [
+                "{{server}}logout"
               ]
             }
           },

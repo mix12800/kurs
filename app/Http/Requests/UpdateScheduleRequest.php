@@ -28,6 +28,7 @@ class UpdateScheduleRequest extends FormRequest
             'start_time' => 'date_format:H:i',
             'end_time' => 'date_format:H:i',
             'interval' => 'regex:/^\d{2}$/',
+            'office_id'=>'exists:offices,id',
         ];
     }
 }

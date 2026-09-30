@@ -8,13 +8,14 @@ use App\Http\Requests\UpdateScheduleRequest;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Pest\Mutate\Mutators\Removal\RemoveEarlyReturn;
 
 class ScheduleController extends Controller
 {
 
     public function myschedule()
     {
-        return response()->json(['schedules' => Schedule::where('doctor_id', Auth::id())->get()]);
+        return response()->json(['schedules' => Schedule::where('doctor_id', Auth::id())->with('office')->get()]);
     }
 
     /**
@@ -41,6 +42,10 @@ class ScheduleController extends Controller
         $user = User::find($request->doctor_id);
         if ($user->role != 'doctor') {
             return response()->json(['errors' => ["doctor_id" => ["Нельзя добавить пациента в расписание."]]], 422);
+        }
+
+        if (Schedule::where('date', $request->date)->where('office_id', $request->office_id)->first()) {
+            return response()->json(["errors" => ["date" => ["Кабинет уже занят на этот день."]]], 422);
         }
 
         if (Schedule::where('doctor_id', $request->doctor_id)->where('date', $request->date)->first()) {
@@ -83,7 +88,7 @@ class ScheduleController extends Controller
      */
     public function show(Schedule $schedule)
     {
-        $schedule = Schedule::with("user.spec")->find($schedule->id);
+        $schedule = Schedule::with("doctor.spec")->find($schedule->id);
         return response()->json(["schedule" => $schedule]);
     }
 
@@ -100,9 +105,24 @@ class ScheduleController extends Controller
      */
     public function update(UpdateScheduleRequest $request, Schedule $schedule)
     {
+
         $user = User::find($request->doctor_id);
         if ($user->role != 'doctor') {
             return response()->json(['errors' => ["doctor_id" => ["Нельзя добавить пациента в расписание."]]], 422);
+        }
+
+        if (Ticket::where('schedule_id', $schedule->id)->whereNotNull('user_id')->first()) {
+            return response()->json(['errors' => ["doctor_id" => ["Нельзя изменить расписание, если запись есть."]]], 422);
+        }
+
+        $is_schedule = Schedule::where('date', $request->date)->where('office_id', $request->office_id)->first();
+        if ($is_schedule && $is_schedule->id != $schedule->id) {
+            return response()->json(["errors" => ["date" => ["Кабинет уже занят на этот день."]]], 422);
+        }
+
+        $is_schedule = Schedule::where('doctor_id', $request->doctor_id)->where('date', $request->date)->first();
+        if ($is_schedule && $is_schedule->id != $schedule->id) {
+            return response()->json(["errors" => ["date" => ["Смена этого врача уже существует на этот день."]]], 422);
         }
 
         if ($request->end_time <= $request->start_time) {
@@ -134,7 +154,6 @@ class ScheduleController extends Controller
             $ticket->save();
             $time_ticket = $time_ticket + $interval;
         }
-
         return response()->json(['schedule' => $schedule]);
     }
 

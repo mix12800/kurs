@@ -9,8 +9,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Office extends Model
 {
-    public function doctor()
-    {
-        return $this->belongsTo(User::class);
-    }
+    //    
 }

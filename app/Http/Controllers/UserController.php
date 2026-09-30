@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
 
+    public function logout()
+    {
+        Auth::user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'ok']);
+    }
+
     public function role(RoleRequest $request, User $user)
     {
         $user->role = $request->role;
@@ -87,10 +93,25 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        $is_user = User::where('login', $request->login)->first();
+
+        if ($is_user && $is_user->id != $user->id) {
+            return response()->json(['errors' => ['login' => ['Такое значение поля Логин уже существует.']]], 422);
+        }
+
+        $is_user = User::where('email', $request->email)->first();
+
+        if ($is_user && $is_user->id != $user->id) {
+            return response()->json(['errors' => ['email' => ['Такое значение поля email уже существует.']]], 422);
+        }
+
         if ($user->id == Auth::id() || Auth::user()->role == 'admin') {
             $user->update($request->all());
             return response()->json(['user' => $user]);
         }
+
+
+
         return response()->json(['error' => ['code' => 403, 'message' => 'Доступ запрещен']], 403);
     }
 

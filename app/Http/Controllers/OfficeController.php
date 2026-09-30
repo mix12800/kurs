@@ -14,7 +14,7 @@ class OfficeController extends Controller
      */
     public function index()
     {
-        return response()->json(['offices' => Office::with('doctor')->get()]);
+        return response()->json(['offices' => Office::all()]);
     }
 
     /**
@@ -30,12 +30,8 @@ class OfficeController extends Controller
      */
     public function store(StoreOfficeRequest $request)
     {
-        $user = User::where('id', $request->doctor_id)->first();
-        if ($user->role == 'doctor') {
-            $office = Office::create($request->all());
-            return response()->json(['office' => $office]);
-        }
-        return response()->json(['errors' => ["doctor_id" => ["Нельзя добавить пациента в кабинет."]]], 422);
+        $office = Office::create($request->all());
+        return response()->json(['office' => $office]);
     }
 
     /**
@@ -43,7 +39,6 @@ class OfficeController extends Controller
      */
     public function show(Office $office)
     {
-        $office = Office::with('doctor.spec')->find($office->id);
         return response()->json(['office' => $office]);
     }
 
@@ -60,12 +55,14 @@ class OfficeController extends Controller
      */
     public function update(UpdateOfficeRequest $request, Office $office)
     {
-        $user = User::where('id', $request->doctor_id)->first();
-        if ($user->role == 'doctor') {
-            $office = Office::create($request->all());
-            return response()->json(['office' => $office]);
+        $is_office = Office::where('num', $request->num)->first();
+
+        if ($is_office && $is_office->id != $office->id) {
+            return response()->json(['errors' => ['name' => ['Такое значение поля Номер уже существует.']]], 422);
         }
-        return response()->json(['errors' => ["doctor_id" => ["Нельзя добавить пациента в кабинет."]]], 422);
+
+        $office->update($request->all());
+        return response()->json(['office' => $office]);
     }
 
     /**
