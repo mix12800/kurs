@@ -40,7 +40,7 @@ class UserController extends Controller
         if ($user && Hash::check($request->password, $user->password)) {
             return response()->json(['token' => $user->createToken('api_token')->plainTextToken, 'user' => $user]);
         }
-        return response()->json(['errors' => ['login' => ['Ошибка вхорда.']]], 422);
+        return response()->json(['errors' => ['login' => ['Ошибка входа.']]], 422);
     }
 
     /**

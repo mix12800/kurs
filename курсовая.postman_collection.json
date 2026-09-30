@@ -618,7 +618,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.login[0]).to.eql('Ошибка вхорда.');\r\n});\r\n"
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.login[0]).to.eql('Ошибка входа.');\r\n});\r\n"
                 ]
               }
             }
@@ -4094,7 +4094,7 @@
       ]
     },
     {
-      "name": "Изменение роль пользователя",
+      "name": "Изменение роли пользователя",
       "item": [
         {
           "name": "Изменение роли пользователя не авторизован",
@@ -6166,14 +6166,14 @@
           "response": []
         },
         {
-          "name": "Создать расписание не существующий кубинет",
+          "name": "Создать расписание не существующий Кабинет",
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.office_id[0]).to.eql(\"Значение поля Кабиент не существует.\");\r\n});"
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.office_id[0]).to.eql(\"Значение поля Кабинет не существует.\");\r\n});"
                 ]
               }
             }
@@ -7383,7 +7383,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.office_id[0]).to.eql(\"Значение поля Кабиент не существует.\");\r\n});"
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.office_id[0]).to.eql(\"Значение поля Кабинет не существует.\");\r\n});"
                 ]
               }
             }
@@ -8744,7 +8744,7 @@
           "response": []
         },
         {
-          "name": "Получить расписание по ID недоступный по правам адмни",
+          "name": "Получить расписание по ID недоступный по правам админа",
           "event": [
             {
               "listen": "test",
@@ -9958,12 +9958,12 @@
               }
             ],
             "url": {
-              "raw": "{{server}}ticket/сancel/{{ticket_id}}",
+              "raw": "{{server}}ticket/cancel/{{ticket_id}}",
               "host": [
                 "{{server}}ticket"
               ],
               "path": [
-                "сancel",
+                "cancel",
                 "{{ticket_id}}"
               ]
             }
@@ -10007,12 +10007,12 @@
               }
             ],
             "url": {
-              "raw": "{{server}}ticket/сancel/1",
+              "raw": "{{server}}ticket/cancel/1",
               "host": [
                 "{{server}}ticket"
               ],
               "path": [
-                "сancel",
+                "cancel",
                 "1"
               ]
             }
@@ -10056,12 +10056,12 @@
               }
             ],
             "url": {
-              "raw": "{{server}}ticket/сancel/1",
+              "raw": "{{server}}ticket/cancel/1",
               "host": [
                 "{{server}}ticket"
               ],
               "path": [
-                "сancel",
+                "cancel",
                 "1"
               ]
             }
@@ -10105,12 +10105,12 @@
               }
             ],
             "url": {
-              "raw": "{{server}}ticket/сancel/1",
+              "raw": "{{server}}ticket/cancel/1",
               "host": [
                 "{{server}}ticket"
               ],
               "path": [
-                "сancel",
+                "cancel",
                 "1"
               ]
             }
@@ -10154,12 +10154,12 @@
               }
             ],
             "url": {
-              "raw": "{{server}}ticket/сancel/0",
+              "raw": "{{server}}ticket/cancel/0",
               "host": [
                 "{{server}}ticket"
               ],
               "path": [
-                "сancel",
+                "cancel",
                 "0"
               ]
             }
@@ -10203,12 +10203,12 @@
               }
             ],
             "url": {
-              "raw": "{{server}}ticket/сancel/{{ticket_id}}",
+              "raw": "{{server}}ticket/cancel/{{ticket_id}}",
               "host": [
                 "{{server}}ticket"
               ],
               "path": [
-                "сancel",
+                "cancel",
                 "{{ticket_id}}"
               ]
             }

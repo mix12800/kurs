@@ -244,7 +244,7 @@ return [
         'start_time' => 'Начало смены',
         'end_time' => 'Конец смены',
         'interval' => 'Интервал',
-        'office_id'=>'Кабиент',
+        'office_id'=>'Кабинет',
     ],
 
 ];

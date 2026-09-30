@@ -30,7 +30,7 @@ class TicketController extends Controller
         return response()->json(['tickets' => Ticket::where('user_id', $user->id)->with('schedule.doctor.spec')->get()]);
     }
 
-    public function сancel(Ticket $ticket)
+    public function cancel(Ticket $ticket)
     {
         if ($ticket->user_id != Auth::user()->id && Auth::user()->role != 'admin') {
             return response()->json(['error' => ['code' => 403, 'message' => 'Доступ запрещен']], 403);

@@ -28,11 +28,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:doctor')->group(function () {
         Route::get('my/schedule', [ScheduleController::class, 'myschedule']);
     });
-
+// cancel
 
     Route::middleware('role:admin|user')->group(function () {
         Route::patch('ticket/{ticket}', [TicketController::class, 'update']);
-        Route::patch('ticket/сancel/{ticket}', [TicketController::class, 'сancel']);
+        Route::patch('ticket/cancel/{ticket}', [TicketController::class, 'cancel']);
         Route::get('tickets/{user}', [TicketController::class, 'mytickets']);
         Route::get('my/ticket/{ticket}', [TicketController::class, 'myticket']);
     });
