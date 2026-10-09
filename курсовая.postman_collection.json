@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "62343aa7-d63c-4f6e-a560-12aa96104205",
+    "_postman_id": "00bf8d3e-f7ae-4229-86b1-b02da2665942",
     "name": "курсовая",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "49678141"
@@ -427,81 +427,6 @@
           "response": []
         },
         {
-          "name": "Регистрация валидация регулярные 2",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.last_name[0]).to.eql('Значение поля Фамилия имеет некорректный формат.');\r\n});\r\n"
-                ]
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "accept": true
-            }
-          },
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "last_name",
-                  "value": "vita",
-                  "type": "text"
-                },
-                {
-                  "key": "first_name",
-                  "value": "vita",
-                  "type": "text"
-                },
-                {
-                  "key": "middle_name",
-                  "value": "vita",
-                  "type": "text"
-                },
-                {
-                  "key": "phone",
-                  "value": "+79999999999",
-                  "type": "text"
-                },
-                {
-                  "key": "email",
-                  "value": "ivan@email.com",
-                  "type": "text"
-                },
-                {
-                  "key": "login",
-                  "value": "ivan",
-                  "type": "text"
-                },
-                {
-                  "key": "password",
-                  "value": "12345678",
-                  "type": "text"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{server}}registration",
-              "host": [
-                "{{server}}registration"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
           "name": "Регистрация успешная",
           "event": [
             {
@@ -558,6 +483,81 @@
                 {
                   "key": "login",
                   "value": "{{$randomUUID}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server}}registration",
+              "host": [
+                "{{server}}registration"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Регистрация валидация регулярные 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.last_name[0]).to.eql('Значение поля Фамилия имеет некорректный формат.');\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "accept": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "last_name",
+                  "value": "vita",
+                  "type": "text"
+                },
+                {
+                  "key": "first_name",
+                  "value": "vita",
+                  "type": "text"
+                },
+                {
+                  "key": "middle_name",
+                  "value": "vita",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+79999999999",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "ivan@email.com",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "ivan",
                   "type": "text"
                 },
                 {
@@ -6291,7 +6291,7 @@
                 },
                 {
                   "key": "date",
-                  "value": "01.10.2026",
+                  "value": "01.10.2126",
                   "type": "text"
                 },
                 {
@@ -7587,7 +7587,7 @@
                 },
                 {
                   "key": "date",
-                  "value": "01.10.2026",
+                  "value": "01.10.2126",
                   "type": "text"
                 },
                 {
@@ -8206,14 +8206,14 @@
           "response": []
         },
         {
-          "name": "Изменить расписание смена уже существует на это-то день",
+          "name": "Изменить расписание успех",
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.date[0]).to.eql(\"Смена этого врача уже существует на этот день.\");\r\n});"
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('schedule');\r\n});"
                 ]
               }
             }
@@ -8246,7 +8246,7 @@
               "formdata": [
                 {
                   "key": "doctor_id",
-                  "value": "2",
+                  "value": "{{create_user_id}}",
                   "type": "text"
                 },
                 {
@@ -8289,14 +8289,14 @@
           "response": []
         },
         {
-          "name": "Изменить расписание успех",
+          "name": "Изменить расписание смена уже существует на это-то день",
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(200);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.have.property('schedule');\r\n});"
+                  "pm.test(pm.info.requestName, function () {\r\n    pm.response.to.have.status(422);\r\n    let jsonData = pm.response.json();\r\n    pm.expect(jsonData.errors.date[0]).to.eql(\"Смена этого врача уже существует на этот день.\");\r\n});"
                 ]
               }
             }
@@ -8329,7 +8329,7 @@
               "formdata": [
                 {
                   "key": "doctor_id",
-                  "value": "{{create_user_id}}",
+                  "value": "2",
                   "type": "text"
                 },
                 {
